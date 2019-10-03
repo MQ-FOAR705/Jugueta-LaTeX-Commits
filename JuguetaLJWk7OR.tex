@@ -5,7 +5,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
 
-\title{FOAR705 - Learning Journal Week 7\&8 - OpenRefine}
+\title{FOAR705 - Learning Journal Week 7\&8 - OpenRefine \& Proof of Concept Design}
 \author{Jan Jugueta - 44828020}
 \date{September \& October 2019}
 
@@ -384,5 +384,198 @@ The blank and non-numeric facets were ticked, presumably because of the 'abc' an
     \item OpenRefine is open source.
     \item Facets help get an overview of the data as well as bring consistency to the data.
 \end{itemize}
+
+\section{OpenRefine Error List}
+
+No errors occured when completing the OpenRefine exercises and lessons.
+
+\newpage
+\section{Proof of Concept - Design}
+
+\subsection{General Thoughts}
+
+\textbf{13/9/19 - 5:21pm}
+
+I have received back my marks for the Elaboration Results and it has left me disheartened. I think now more than ever am I unsure about what I am doing, whether I should be aiming to stretch myself and try something ambitious or just design something that will work and assist me in my research. Honestly, I am leaning towards the latter.
+
+Two main points of feedback for my Elaboration results are:
+\begin{enumerate}
+    \item I didn't detail alternatives to Voyant Tools
+    \item That simply going through the articles I find in \textit{Neues Deutschland} and copying and pasting them into .txt files is not the best way to move forward
+\end{enumerate}
+
+I accept the feedback regarding the first point. I should have detailed alternatives to Voyant Tools for my textual analysis. As for the second, I would rather not automate that process for two main reasons.
+\begin{enumerate}
+    \item If I were to somehow automate the process of copying text from the \textit{Neues Deutschland} website, it would also copy in advertisements and other non-relevant text that would be too much of a hassle to clean up after the fact.
+    \item Many results returned for the search query are not relevant at all to my research. This would only serve to save more unnecessary articles on my machine, which could skew corpus analysis at a later date. I would feel more comfortable actually \textbf{reading} every article on \textit{Neues Deutschland} before choosing which I should save and which I would not.
+\end{enumerate}
+
+\textbf{16/9/19 - 3:15pm}
+
+Having a look at the next step for the Proof of Concept and I am finding it difficult ascertaining what I should actually be doing. It seems like the user stories that I have come up with are very similar, if not the same as the steps I had covered in Elaboration? Do I just repeat that work?
+
+\textbf{16/9/19 - 4:02pm}
+
+Without receiving feedback on my Proof of Concept Design with user stories, I am going to go ahead with what I have come up with. I am making the point that the collection of articles has already been done. My Proof of Concept will only be concerned with the analysis of text and storage of data.
+
+\textbf{16/9/19 - 4:44pm}
+
+Having completed learning how to save the textual analysis performed by Voyant Tools as a .tsv file, I now realise it is in a format that can work with OpenRefine. I may now consider using OpenRefine in my workflow to analyse the data once more.
+
+\textbf{19/9/19 - 10:23am}
+
+I think I need to read more about Open Semantic Desktop Search. It seems like a very powerful piece of software. For now, I am happy that it is able to do the tasks I need it to do, but I have no doubt that it probably can do so much more.
+
+\newpage
+\subsection{Proof of Concept - User Stories Testing}
+
+\subsubsection{Identify Themes}
+
+\textbf{16/9/19 - 4:05pm}
+
+\textbf{Objective:} See if Voyant Tools is able to analyse a corpus of text to see if there are any themes that emerge.
+
+\textbf{Action:}
+\begin{enumerate}
+    \item Go to www.voyant-tools.org
+    \item Select upload
+    \item Navigate to the directory on my machine where the corpus is selected
+    \item Select all the .txt files that I want analysed
+    \item Select reveal
+\end{enumerate}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Voyant Tools successfully analyses a corpus of text.
+
+\subsubsection{Store Analysis}
+
+\textbf{16/9/19 - 4:24pm}
+
+\textbf{Objective:} Find out what can be exported as data from Voyant Tools.
+
+\textbf{Action:} Click on every 'Export' button to see what was applicable
+
+\textbf{Error:} None.
+
+\textbf{Result:} The following can be exported as .tsv files:
+\begin{itemize}
+    \item Terms
+    \item Document Terms
+    \item Documents
+    \item Phrases
+    \item Contexts
+    \item Correlations
+\end{itemize}
+
+All other analysis outputs can be exported as Visualitions in the form of a .png file.
+
+\textbf{16/9/19 - 4:37pm}
+
+\textbf{Objective:} Store 'Terms' as a .tsv file
+\begin{enumerate}
+    \item Click on Export in the Terms window in Voyant Tools
+    \item Click 'export all available data as tab separated values (text)'
+    \item Copy the text from the new window that opens
+    \item Open TextEdit on my machine
+    \item Paste text into TextEdit
+    \item Save as terms.tsv in the /Jugueta/MRes/data/textualanalysis/ directory
+\end{enumerate}
+
+\textbf{Error:} None.
+
+\textbf{Result:} New filed saved as terms.tsv
+
+\subsubsection{Additional Notes}
+
+\textbf{16/9/19 - 4:52pm}
+
+\textbf{Objective:} Store additional notes I have made on the analysis onto my machine
+
+\textbf{Action:}
+\begin{enumerate}
+    \item Open TextEdit
+    \item Write notes
+    \item Save notes a .txt file
+    \item Save in the /Jugueta/MRes/notes/textualanalysis/ directory on my machine
+\end{enumerate}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Am able to use TextEdit to save notes on my machine.
+
+\subsubsection{Create Tags}
+
+\textbf{19/9/19 - 10:25am}
+
+\textbf{Objective:} Create a 'stasi' tag that will be used to organise my data and notes relating to the East German Secret Police using Open Semantic Desktop Search.
+
+\textbf{Action:}
+\begin{enumerate}
+    \item Launch VirtualBox VM
+    \item Set the Shared Folder to /Jugueta/MRes/
+    \item Start Open Semantic Desktop Search
+    \item Click on the Activities menu in Open Semantic Desktop Search
+    \item Click on Index documents to ensure that I am working with the right directory
+    \item Click on Manage structure
+    \item Click on Add new entry
+    \item Enter 'stasi' for the name and select tag in Facet type
+    \item Click Save
+\end{enumerate}
+
+\textbf{Error:} None.
+
+\textbf{Result:} A 'stasi' tag is now in existence.
+
+\subsubsection{Search My Research}
+
+\textbf{19/9/19 - 10:59am}
+
+\textbf{Objective:} Search for 'Hamburg' using Open Semantic Desktop Search
+
+\textbf{Action:}
+\begin{itemize}
+    \item Launch VirtualBox VM
+    \item Start Open Semantic Desktop Search
+    \item Type in 'Hamburg' in the Search bar
+    \item Click on Search
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} 38 results were returned with the query 'Hamburg'. This has searched my entire MRes folder though, so I want to see if there is a way to be more succinct with the search.
+
+\textbf{19/9/19 - 11:37am}
+
+\textbf{Objective:} Be more succinct with my searches, targeting a specific path or folder.
+
+\textbf{Action:}
+\begin{itemize}
+    \item Launch VirtualBox VM
+    \item Start Open Semantic Desktop Search
+    \item Type in 'Hamburg' in the Search bar
+    \item In Paths, select MRes
+    \item Select notes
+    \item Select articles
+    \item Click on Search
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Search was contained only in the articles folder. It returned 5 items.
+
+\textbf{19/9/19 - 11:43am}
+
+\textbf{Objective:} Figure out what is achievable in the search option settings.
+
+\begin{itemize}
+    \item Launch VirtualBox VM
+    \item Start Open Semantic Desktop Search
+    \item Used numerous combinations of search phrases to test the search option settings.
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Open Semantic Desktop Search has powerful bolean search operators. So it's just like MultiSearch. It also has fuzzy search options, that will return other word forms similar to the query (grammar and stemming).
 
 \end{document}
