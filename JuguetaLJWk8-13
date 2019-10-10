@@ -496,8 +496,45 @@ Using \begin{verbatim}
 
 If we try to mix different vectors together, R will convert them all to be the same type.
 
+For the second part of this exercise, it seems that R will find the common denominator and convert them all to that same type.
+
+For the third part of the exercise, only one value of TRUE is present, which is part of the \begin{verbatim}
+    char_logical
+\end{verbatim} object.
+
+\subsection{Missing data}
+
+\textbf{9/10/19 - 6:15pm}
+
+\textbf{Objective:} Create a new vector with NAs removed then use \begin{verbatim}
+    median()
+\end{verbatim} to find the median of the rooms.
+
+\textbf{Action:} Used the following codes:
+\begin{verbatim}
+    rooms_no_na <- na.omit(rooms)
+    median(rooms,na.rm=TRUE)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} The median returned the value of 1.
+
+\textbf{9/10/19 - 6:18pm}
+
+\textbf{Objective:} Use R to figure out how many households in the set use more than 2 rooms for sleeping
+
+\textbf{Action:} Used the following codes \begin{verbatim}
+    rooms_above_2 <- rooms_no_na[rooms_no_na > 2]
+length(rooms_above_2)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Returned the value of 4.
+
 \newpage
-\section{Proof of Concept - Design}
+\section{Proof of Concept}
 
 \subsection{General Thoughts}
 
@@ -541,8 +578,20 @@ My main take away from this was that the point of the Proof of Concept was to ge
 
 I have downloaded the Voyant Tools open-source software directly on my machine. Let's see what I can do with this.
 
+\textbf{10/10/19 - 10:48pm}
+
+So I finally got around to creating a GitHub repository for my Proof of Concept in the FOAR705 organisation. I feel like I'm playing catch up, but at least I know what I'm doing now.
+
+\textbf{10/10/19 - 11:03pm}
+
+I want to put in writing what I am actually working on as part of my Proof of Concept. What I want to do is to automate the process of \textbf{\textit{saving}} the results of textual analysis straight into Open Semantic Desktop Search. Having that tagged automatically would be great too.
+
+\textbf{10/10/19 - 11:21pm}
+
+I have downloaded Duplicati because it seems like a decent enough back up solution. I will look into it much further later.
+
 \newpage
-\subsection{Proof of Concept - User Stories Testing}
+\subsection{Proof of Concept Design - User Stories Testing}
 
 \subsubsection{Identify Themes}
 
@@ -562,6 +611,40 @@ I have downloaded the Voyant Tools open-source software directly on my machine. 
 \textbf{Error:} None.
 
 \textbf{Result:} Voyant Tools successfully analyses a corpus of text.
+
+\textbf{10/10/19 - 11:40pm}
+
+\textbf{Objective:} See if I can run Voyant Tools on my computer.
+
+\textbf{Action:}
+
+\begin{itemize}
+    \item Downloaded Voyant Tools .zip file from Voyant Server website
+    \item Unpackaged .zip file
+    \item Run VoyantServer.jar
+\end{itemize}
+
+\textbf{Error:} VoyantServer.jar would not open
+
+\textbf{Result:} VoyantServer.jar wouldn't run because it needs to install Java Development Kit to run.
+
+\textbf{10/10/19 - 11:49pm}
+
+\textbf{Objective:} See if I can run Voyant Tools on my computer after installing JDK.
+
+\textbf{Action:}
+
+\begin{itemize}
+    \item Downloaded Voyant Tools .zip file from Voyant Server website
+    \item Unpackaged .zip file
+    \item Run VoyantServer.jar
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} VoyantServer is running. It also opens up a window in my default browser.
+
+\includegraphics[width=\textwidth]{voyantserver.png}
 
 \subsubsection{Store Analysis}
 
@@ -758,6 +841,24 @@ All other analysis outputs can be exported as Visualitions in the form of a .png
 \textbf{Error:} None.
 
 \textbf{Result:} The notes are correctly tagged with the 'stasi' tag.
+
+\subsection{Errors in Proof of Concept}
+
+\textbf{10/10/19 - 11:40pm}
+
+\textbf{Objective:} See if I can run Voyant Tools on my computer.
+
+\textbf{Action:}
+
+\begin{itemize}
+    \item Downloaded Voyant Tools .zip file from Voyant Server website
+    \item Unpackaged .zip file
+    \item Run VoyantServer.jar
+\end{itemize}
+
+\textbf{Error:} VoyantServer.jar would not open
+
+\textbf{Result:} VoyantServer.jar wouldn't run because it needs to install Java Development Kit to run.
 
 \newpage
 \section{Misc Notes on FOAR705}
