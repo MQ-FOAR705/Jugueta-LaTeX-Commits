@@ -390,6 +390,113 @@ The blank and non-numeric facets were ticked, presumably because of the 'abc' an
 No errors occured when completing the OpenRefine exercises and lessons.
 
 \newpage
+\section{R for Social Scientists Lessons}
+
+\subsection{Create a new project}
+
+\textbf{9/10/19 - 1:24pm}
+
+\textbf{Objective:} Create a new project in R Studio
+
+\textbf{Action:}
+
+\begin{itemize}
+    \item Open RStudio
+    \item Click File - New project - New directory - New project
+    \item Enter the name data-carpentry
+\item Click Create project
+\item Click File - New File - R script
+\item Click save icon and name script "script.R"
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} New data-carpentry project created along with script.R
+
+\subsection{Downloading the data and getting set up}
+
+\textbf{9/10/19 - 1:34pm}
+
+\textbf{Objective:} Create the directories "data", "data\_output" and "fig\_output"
+
+\textbf{Action:} Type in the code
+\begin{verbatim}
+    dir.create("data")
+    dir.create("data_output")
+    dir.create("fig_output")
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} The three directories were created.
+
+\section{R for Social Scientists Exercises}
+
+\subsection{Installing additional packages using the packages tab}
+
+\textbf{9/10/19 - 1:54pm}
+
+\textbf{Objective:} Download tidyverse package
+
+\textbf{Action:}
+\begin{itemize}
+    \item Click on Packages tab
+\item Click on Install
+\item Type in tidyverse
+\item Click Install
+\end{itemize}
+
+\textbf{Error: None}
+
+\textbf{Result:} Tidyverse installed, along with what looks like many other packages.
+
+\subsection{Creating ojbects in R}
+
+\textbf{9/10/19 - 4:36pm}
+
+The value is still 6.175
+
+\subsection{Comments}
+
+\textbf{9/10/19 - 4:49pm}
+
+\textbf{Objective:} See what happens when I create objects for width and length and get them to work with area.
+
+\textbf{Action:} Entered the following code in:
+\begin{verbatim}
+    length <- 2
+    width <- 1
+    area <- length*witdh
+\end{verbatim}
+
+Then changed the value for length to 7.0 and width to 6.5. Retyped area.
+
+\textbf{Error:} None.
+
+\textbf{Result:} Area did not change after the values of length and width were changed. This is presumably because \begin{verbatim}
+    area <- length*width
+\end{verbatim} was not run again.
+
+\subsection{Functions and their arguments}
+
+\textbf{9/10/19 - 5:20pm}
+
+Using \begin{verbatim}
+    ?round
+\end{verbatim} it seems that there are other functions similar to it. These include \begin{verbatim}
+    ceiling(x)
+    floor(x)
+    trunc(x,...)
+    signif(x,digits=6)
+\end{verbatim}
+
+\subsection{Vectors and data types}
+
+\textbf{9/10/19 - 5:46pm}
+
+If we try to mix different vectors together, R will convert them all to be the same type.
+
+\newpage
 \section{Proof of Concept - Design}
 
 \subsection{General Thoughts}
@@ -425,6 +532,14 @@ Having completed learning how to save the textual analysis performed by Voyant T
 \textbf{19/9/19 - 10:23am}
 
 I think I need to read more about Open Semantic Desktop Search. It seems like a very powerful piece of software. For now, I am happy that it is able to do the tasks I need it to do, but I have no doubt that it probably can do so much more.
+
+\textbf{9/10/19 - 10:23am}
+
+After clearing some of my uni workload, I was finally able to organise a meeting with Brian. The meeting proved to be very helpful, with Brian providing me clarification on what I needed to do as part of my Proof of Concept.
+
+My main take away from this was that the point of the Proof of Concept was to get the computer to do more work where it can, giving me the opportunity to drink more coffee (or another beverage of my choice). I realised my Proof of Concept was automating the process of getting text analysed using Voyant Tools and straight into Open Semantic Desktop Search.
+
+I have downloaded the Voyant Tools open-source software directly on my machine. Let's see what I can do with this.
 
 \newpage
 \subsection{Proof of Concept - User Stories Testing}
