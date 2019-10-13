@@ -430,6 +430,128 @@ No errors occured when completing the OpenRefine exercises and lessons.
 
 \textbf{Result:} The three directories were created.
 
+\subsection{Presentation of the SAFI data}
+
+\textbf{13/10/19 - 11:44am}
+
+\textbf{Objective:} Load tidyverse and make an interviews object
+
+\textbf{Action:} Used the following codes \begin{verbatim}
+    library(tidyverse)
+    interviews <- read_csv("data/SAFI_clean.csv", na = "NULL")
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Tidyverse loaded and created the interviews object.
+
+\subsection{Indexing and subsetting data frames}
+
+\textbf{13/10/19 - 11:57am}
+
+Just following with the lesson. I used the following codes in this section.
+
+\begin{verbatim}
+    ## first element in the first column of the data frame (as a vector)
+    interviews[1, 1]
+    ## first element in the 6th column (as a vector)
+    interviews[1, 6]
+    ## first column of the data frame (as a vector)
+    interviews[[1]]
+    ## first column of the data frame (as a data.frame)
+    interviews[1]
+    ## first three elements in the 7th column (as a vector)
+    interviews[1:3, 7]
+    ## the 3rd row of the data frame (as a data.frame)
+    interviews[3, ]
+    ## equivalent to head_interviews <- head(interviews)
+    head_interviews <- interviews[1:6, ]
+    interviews[, -1]          # The whole data frame, except the first column
+    interviews[-c(7:131), ]   # Equivalent to head(interviews)
+    interviews["village"]       # Result is a data frame
+    interviews[, "village"]     # Result is a data frame
+    interviews[["village"]]     # Result is a vector
+    interviews$village          # Result is a vector
+\end{verbatim}
+
+\subsection{Factors}
+
+\textbf{13/10/19 - 12:04pm}
+
+I just followed along with the lesson and had no errors. Below is the list of code I inputted into RStudio:
+\begin{verbatim}
+    respondent_floor_type <- factor(c("earth", "cement", "cement", "earth"))
+    levels(respondent_floor_type)
+    nlevels(respondent_floor_type)
+    respondent_floor_type # current order
+    respondent_floor_type <- factor(respondent_floor_type, levels = c("earth", "cement"))
+    respondent_floor_type # after re-ordering
+    levels(respondent_floor_type)
+    levels(respondent_floor_type)[2] <- "brick"
+    levels(respondent_floor_type)
+    respondent_floor_type
+\end{verbatim}
+
+\subsection{Converting factors}
+
+\textbf{13/10/19 - 12:09pm}
+
+\begin{verbatim}
+    as.character(respondent_floor_type)
+    year_fct <- factor(c(1990, 1983, 1977, 1998, 1990))
+    as.numeric(year_fct)                     # Wrong! And there is no warning...
+    as.numeric(as.character(year_fct))       # Works...
+    as.numeric(levels(year_fct))[year_fct]   # The recommended way.
+\end{verbatim}
+
+\subsection{Renaming factors}
+
+\textbf{13/10/19 - 12:15pm}
+
+SO I have kept on following the lesson. I used these codes: \begin{verbatim}
+    ## create a vector from the data frame column "memb_assoc"
+    memb_assoc <- interviews$memb_assoc
+    ## convert it into a factor
+    memb_assoc <- as.factor(memb_assoc)
+    ## let's see what it looks like
+    memb_assoc
+    ## bar plot of the number of interview respondents who were
+    ## members of irrigation association:
+    plot(memb_assoc)
+\end{verbatim}
+
+I noticed that a plot appeared in one of the panes. I also noticed I could export it, so I decided to do that. I set the export path to point to fig\_output directory. This is what the image looks like.
+
+\includegraphics[width=\textwidth]{Rplot.png}
+
+Continuing with the lesson, I entered these codes: \begin{verbatim}
+    memb_assoc <- interviews$memb_assoc
+    memb_assoc[is.na(memb_assoc)] <- "undetermined"
+    memb_assoc <- as.factor(memb_assoc)
+    memb_assoc
+    plot(memb_assoc)
+\end{verbatim}
+
+And got this plot.
+
+\includegraphics[width=\textwidth]{Rplot01.png}
+
+\subsection{Formatting dates}
+
+\textbf{13/10/19 - 12:33pm}
+
+Following on with the lesson. Experienced no errors when inputting these codes: \begin{verbatim}
+    str(interviews)
+    library(lubridate)
+    dates <- interviews$interview_date
+    str(dates)
+    interviews$day <- day(dates)
+    interviews$month <- month(dates)
+    interviews$year <- year(dates)
+    interviews
+\end{verbatim}
+
+\newpage
 \section{R for Social Scientists Exercises}
 
 \subsection{Installing additional packages using the packages tab}
@@ -533,6 +655,49 @@ length(rooms_above_2)
 
 \textbf{Result:} Returned the value of 4.
 
+\subsection{Indexing and subsetting data frames}
+
+\textbf{13/10/19 - 12:01pm}
+
+For this exercise, I used these codes in this order:
+
+\begin{verbatim}
+    interviews_100 <- interviews[100, ]
+    n_rows <- nrow(interviews)
+    interviews_last <- interviews[n_rows, ]
+    interviews_middle <- interviews[(n_rows / 2), ]
+    interviews_head <- interviews[-(7:n_rows), ]
+\end{verbatim}
+
+\subsection{Renaming factors}
+
+\textbf{13/10/19 - 12:24pm}
+
+\textbf{Objective:} Rename the levels of the factor to have the first letter in uppercase: "No", "Undetermined", and "Yes".
+
+\textbf{Action:} I used the following code: \begin{verbatim}
+    levels(memb_assoc) <- c("No", "Undetermined", "Yes")
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} They are now in uppercase.
+
+\textbf{13/10/19 - 12:26pm}
+
+\textbf{Objective:} Recreate the barplot so that "Undetermined" is last.
+
+\textbf{Action:} I used the following code: \begin{verbatim}
+    memb_assoc <- factor(memb_assoc, levels = c("No", "Yes", "Undetermined"))
+    plot(memb_assoc)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Please see the below plot.
+
+\includegraphics[width=\textwidth]{Rplot02.png}
+
 \newpage
 \section{Proof of Concept}
 
@@ -589,6 +754,14 @@ I want to put in writing what I am actually working on as part of my Proof of Co
 \textbf{10/10/19 - 11:21pm}
 
 I have downloaded Duplicati because it seems like a decent enough back up solution. I will look into it much further later.
+
+\textbf{11/10/19 - 1:44pm}
+
+Have sat in the consultation hour before class seeing if I could figure out how to output data from Voyant. Still no idea.
+
+\textbf{11/10/19 - 4:30pm}
+
+Just stayed back after class to work with Aaron Hammond trying to find the elusive Voyant API. Had no luck. Instead, I made a Slack channel called \#voyanttools to pool together students who are using Voyant in their workflow.
 
 \newpage
 \subsection{Proof of Concept Design - User Stories Testing}
