@@ -763,8 +763,79 @@ Have sat in the consultation hour before class seeing if I could figure out how 
 
 Just stayed back after class to work with Aaron Hammond trying to find the elusive Voyant API. Had no luck. Instead, I made a Slack channel called \#voyanttools to pool together students who are using Voyant in their workflow.
 
+\textbf{16/10/19 - 2:10pm}
+
+I have met with fellow student Sophie Avard to see where we align in our Proof of Concepts. We have both tried to find the Voyant API. We both have had no luck with this. I'm starting to wonder if it exists? Some documentation on GitHub keep pointing to "Trombone" as a backend into Voyant, but I still don't know how this works.
+
+\textbf{17/10/19 - 6:40pm}
+
+A few things have transpired since the last update.
+\begin{itemize}
+    \item First, and perhaps most importantly. I \emph{finally} have access to \textit{Neues Deutschland's} online archive. This means I am now able to see what kind of text I am able to save. The website offers text picked up by their own OCR technology, along with high resolution scans of the newspaper pages. Since the text they provide comes from OCR, there have been instances of errors that appear in the text. I am therefore more resolved to clean the data at the front end by visually confirming whether the text from the OCR matches the high resolution page scans. Whilst this process may seem tedious, I cannot envisage of a process that would automate this. It simply requires a human eye to confirm the data is correct.
+    \item I also realised that I may need to create another user story. When the text is saved in a .txt file, it saves not only the title, but the subtitle, date and tagline information. This user story would then help with saving the articles in a format that would allocate a line for each type of information. My proposal would be saving the .txt files in this format
+    \begin{verbatim}
+        Date
+        Article title
+        Article subtitle
+        Information on the author
+        BLANK LINE
+        Start of the body text
+    \end{verbatim}
+    This would help with textual analysis later on because I imagine I could write a script in Terminal that is able to copy selected .txt files and extract either the Body of the text, the article name, date, etc. This will mean that words found in the titles will not appear in the analysis of the body text. Or analysis of just titles will be possible.
+    \item I still have not had any luck finding an API for Voyant. I feel like giving up on this front and focus instead on writing a script that will help me manipulate the .txt files.
+\end{itemize}
+
+\newpage
+\subsection{User Stories}
+
+The majority of user stories below were conceived of during the Elaboration Phase. New user stories have since been conceived of since I have gained access to the source material I will be dealing with. I have reintroduced the user story of \textbf{Save sources} from Elaboration I, whilst I have added the new user story \textbf{Extract the specific information I want from the .txt files}.
+
+\subsubsection{Save sources}
+
+As a research student, I would like to save the text from the newspaper articles into a .txt format that allows for an easier extraction of the information I want.
+
+\subsubsection{Extract the specific information I want from the .txt files}
+
+As a research student, I would like to be able to run a script that is able to target specific sections of the text for analysis, i.e. titles, dates, the body of the text, authors, for more concise analysis.
+
+\subsubsection{Identify Themes}
+
+As a research student, I would like to use software that is able to analyse a corpus of text and identify emergent themes thereof.
+
+\subsubsection{Store Analysis}
+
+As a research student, I would like to store the data captured from the textual analysis onto my machine.
+
+\subsubsection{Additional Notes}
+
+As a research student, I would like to store any notes I have written about the analysis separate to the data captured so not to corrupt the original data.
+
+\subsubsection{Create Tags}
+
+As a research student, I would like to create a set of tags that will help me organise all my data (including articles, textual analysis data and research notes.
+
+\subsubsection{Search My Research}
+
+As a research student, I would like software that would allow me to search through all newspaper articles, data from textual analysis and notes.
+
+\subsubsection{Tag Newspaper Articles}
+
+As a research student, I would like software that would allow me to tag themes or keywords to the newspaper articles that have been analysed.
+
+\subsubsection{Tag Analysis}
+
+As a research student, I would like software that would allow me to tag themes or keywords to the data captured from the textual analysis.
+
+\subsubsection{Tag Notes}
+
+As a research student, I would like software that would allow me to tag themes or keywords to the notes that I have written as part of my research.
+
 \newpage
 \subsection{Proof of Concept Design - User Stories Testing}
+
+\subsubsection{Save sources}
+
+\subsubsection{Extract the specific information I want from the .txt files}
 
 \subsubsection{Identify Themes}
 
