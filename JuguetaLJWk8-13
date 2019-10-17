@@ -786,7 +786,7 @@ A few things have transpired since the last update.
 \end{itemize}
 
 \newpage
-\subsection{User Stories}
+\subsection{Proof of Concept Design - User Stories}
 
 The majority of user stories below were conceived of during the Elaboration Phase. New user stories have since been conceived of since I have gained access to the source material I will be dealing with. I have reintroduced the user story of \textbf{Save sources} from Elaboration I, whilst I have added the new user story \textbf{Extract the specific information I want from the .txt files}.
 
@@ -831,11 +831,136 @@ As a research student, I would like software that would allow me to tag themes o
 As a research student, I would like software that would allow me to tag themes or keywords to the notes that I have written as part of my research.
 
 \newpage
-\subsection{Proof of Concept Design - User Stories Testing}
+\subsection{Proof of Concept - User Stories Testing}
 
 \subsubsection{Save sources}
 
 \subsubsection{Extract the specific information I want from the .txt files}
+
+The first part of this step needs to be manually performed. I need to select which articles (in their .txt file format) will be part of a corpus that will be analysed. I will then copy the original files into a directory called 'corpus\_input'. From here I am testing if I can make a script that will extract whatever information I want out of the corpus and put it into a new directory called 'corpus\_output'.
+
+\textbf{17/10/19 - 10:30pm}
+
+\textbf{Objective:} Read only the title of the article in a .txt file.
+
+Because the title of the article is on line 2 of the .txt file, I should be able to use a code to get this line.
+
+\textbf{Action:} Using the following code: \begin{verbatim}
+    sed -n 2p *.txt
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returns with the result 'Unverantwortlicher Entscheid', which is the title of the first article. I'm not sure why it only return one .txt's title when I used the wildcard *.txt.
+
+\textbf{17/10/19 - 10:45pm}
+
+Maybe I should try the head and tail commands as suggested in the Unix SWC lesson.
+
+\textbf{Objective:} Read only the title of the article in a .txt file using the head and tail commands in a loop.
+
+\textbf{Action:} Used the following code:\begin{verbatim}
+    for filename in 1973-11-13_UnverantwortlicherEntscheid.txt
+    1973-11-21_FIFA-Haltungbefremdend.txt 
+    > do
+    > head -n 2 $filename | tail -n 1
+    > done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned \begin{verbatim}
+    Unverantwortlicher Entscheid
+    FIFA-Haltung befremdend
+\end{verbatim} which are the titles of the two articles!
+
+\textbf{17/10/19 - 10:55pm}
+
+Now to see if I can work with variables to get the titles from \emph{all} the .txt files.
+
+\textbf{Objective:} Extract all the titles from every single .txt in the corpus\_input directory.
+
+\textbf{Action:} Used the commands:\begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1
+    > done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned this \begin{verbatim}
+Unverantwortlicher Entscheid
+Australien qualifiziert
+Kurz berichtet
+Die falschen Garantien der chilenischen Junta
+Bulgarien qualifiziert
+Holland nach 0:0 gegen Belgien qualifiziert
+FIFA-Haltung befremdend
+Nun im Nepstadion Sieg für Nationalelf 1:0
+\end{verbatim} which is correct!
+
+\textbf{17/10/19 - 11:09pm}
+
+Now to see if I can create a new text file with all titles in it.
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles.
+
+\textbf{Action:} Used the following code: \begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1
+    > cat $filename >> articletitles.txt
+    > done
+\end{verbatim}
+
+\textbf{Error:} Yes, and error! It didn't work exactly as planned. 
+
+\textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files. I think this is because the \begin{verbatim}
+    cat $filename >> articletitles.txt
+\end{verbatim} command wasn't piped the the earlier \begin{verbatim}
+    do head -n 2 $filename | tail -n 1
+\end{verbatim} command.
+
+\textbf{17/10/19 - 11:16pm}
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles.
+
+\textbf{Action:} Used the following code: \begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
+    > done\end{verbatim}
+
+\textbf{Error:} Same error as before...
+
+\textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files.
+
+\textbf{17/10/19 - 11:38pm}
+
+After conceptualising it step by step in my mind, I think I know the code I should use.
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles.
+
+\textbf{Action:} Used the following code: \begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1
+    > done > articletitles.txt \end{verbatim}
+
+\textbf{Error:} None! Finally!
+
+\textbf{Result:} articletitles.txt file created with ALL the titles from the articles put on their own line.
+
+\textbf{17/10/19 - 11:46pm}
+
+The last step is to move the newly created articletitles.txt file to the corpus\_output directory ready for analysis.
+
+\textbf{Move the newly created articletitles.txt file to the corpus\_output directory}
+
+\textbf{Action:} Use the following command:\begin{verbatim}
+    mv articletitles.txt ../corpus_output/articletitles.txt
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} articletitles.txt moved from corpus\_input directory to the corpus\_output directory.
 
 \subsubsection{Identify Themes}
 
@@ -1086,6 +1211,7 @@ All other analysis outputs can be exported as Visualitions in the form of a .png
 
 \textbf{Result:} The notes are correctly tagged with the 'stasi' tag.
 
+\newpage
 \subsection{Errors in Proof of Concept}
 
 \textbf{10/10/19 - 11:40pm}
@@ -1103,6 +1229,55 @@ All other analysis outputs can be exported as Visualitions in the form of a .png
 \textbf{Error:} VoyantServer.jar would not open
 
 \textbf{Result:} VoyantServer.jar wouldn't run because it needs to install Java Development Kit to run.
+
+\textbf{17/10/19 - 11:09pm}
+
+Now to see if I can create a new text file with all titles in it.
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles.
+
+\textbf{Action:} Used the following code: \begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1
+    > cat $filename >> articletitles.txt
+    > done
+\end{verbatim}
+
+\textbf{Error:} Yes, and error! It didn't work exactly as planned. 
+
+\textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files. I think this is because the \begin{verbatim}
+    cat $filename >> articletitles.txt
+\end{verbatim} command wasn't piped the the earlier \begin{verbatim}
+    do head -n 2 $filename | tail -n 1
+\end{verbatim} command.
+
+\textbf{17/10/19 - 11:16pm}
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles.
+
+\textbf{Action:} Used the following code: \begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
+    > done\end{verbatim}
+
+\textbf{Error:} Same error as before...
+
+\textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files.
+
+\subsection{Proof of Concept Solutions}
+
+\subsubsection{Extracting titles from the selection of articles}
+
+Using the following code, one could extract just the title from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an articletitles.txt file in the corpus\_output directory.
+
+\begin{verbatim}
+    for filename in *.txt
+    > do head -n 2 $filename | tail -n 1
+    > done > articletitles.txt
+    mv articletitles.txt ../corpus_output/articletitles.txt
+\end{verbatim}
+
+The next step is to recreate these set of commands as a script.
 
 \newpage
 \section{Misc Notes on FOAR705}
