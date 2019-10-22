@@ -551,6 +551,472 @@ Following on with the lesson. Experienced no errors when inputting these codes: 
     interviews
 \end{verbatim}
 
+\subsection{Learning dplyr and tidyr}
+
+\textbf{22/10/19 - 5:49pm}
+
+Reloaded tidyverse and reviewed the data.
+
+\subsection{Selecting columns and filtering rows}
+
+\textbf{22/10/19 - 5:52pm}
+
+Inputed \begin{verbatim}
+    select(interviews, village, no_membrs, years_liv)
+\end{verbatim}
+
+Returned \begin{verbatim}
+    # A tibble: 131 x 3
+   village  no_membrs years_liv
+   <chr>        <dbl>     <dbl>
+ 1 God              3         4
+ 2 God              7         9
+ 3 God             10        15
+ 4 God              7         6
+ 5 God              7        40
+ 6 God              3         3
+ 7 God              6        38
+ 8 Chirodzo        12        70
+ 9 Chirodzo         8         6
+10 Chirodzo        12        23
+# … with 121 more rows
+\end{verbatim}
+
+Filtered for "God" with \begin{verbatim}
+    filter(interviews, village == "God")
+\end{verbatim}
+
+Returned \begin{verbatim}
+    # A tibble: 43 x 17
+   key_ID village interview_date      no_membrs years_liv respondent_wall… rooms
+    <dbl> <chr>   <dttm>                  <dbl>     <dbl> <chr>            <dbl>
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub              1
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub              1
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks          1
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks          1
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks          1
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub              1
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub              1
+ 8     11 God     2016-11-21 00:00:00         6        20 sunbricks            1
+ 9     12 God     2016-11-21 00:00:00         7        20 burntbricks          3
+10     13 God     2016-11-21 00:00:00         6         8 burntbricks          1
+# … with 33 more rows, and 10 more variables: memb_assoc <chr>,
+#   affect_conflicts <chr>, liv_count <dbl>, items_owned <chr>, no_meals <dbl>,
+#   months_lack_food <chr>, instanceID <chr>, day <int>, month <dbl>, year <dbl>
+\end{verbatim}
+
+Not sure why my came back with 10 more variables as opposed to 8.
+
+\subsection{Pipes}
+
+\textbf{22/10/19 - 6:04pm}
+
+Tried my hand at pipes in R using this \begin{verbatim}
+    interviews %>%
+    filter(village == "God") %>%
+    select(no_membrs, years_liv)
+\end{verbatim}
+
+And it came back with this \begin{verbatim}
+    # A tibble: 43 x 2
+   no_membrs years_liv
+       <dbl>     <dbl>
+ 1         3         4
+ 2         7         9
+ 3        10        15
+ 4         7         6
+ 5         7        40
+ 6         3         3
+ 7         6        38
+ 8         6        20
+ 9         7        20
+10         6         8
+# … with 33 more rows
+\end{verbatim}
+
+which was the same as the lesson. So good.
+
+\textbf{22/10/19 - 6:20pm}
+
+Keeping on with pipes. I put this in \begin{verbatim}
+    interviews_god <- interviews %>%
+    filter(village == "God") %>%
+    select(no_membrs, years_liv
+
+    interviews_god
+\end{verbatim}
+
+and got this out \begin{verbatim}
+    # A tibble: 43 x 2
+   no_membrs years_liv
+       <dbl>     <dbl>
+ 1         3         4
+ 2         7         9
+ 3        10        15
+ 4         7         6
+ 5         7        40
+ 6         3         3
+ 7         6        38
+ 8         6        20
+ 9         7        20
+10         6         8
+# … with 33 more rows
+\end{verbatim}
+
+\subsection{Mutate}
+
+\textbf{22/10/19 - 6:29pm}
+
+Used this code \begin{verbatim}
+    interviews %>%
+    mutate(people_per_room = no_membrs / rooms)
+\end{verbatim}
+
+and had this returned, just like in the lesson. \begin{verbatim}
+    # A tibble: 131 x 18
+   key_ID village interview_date      no_membrs years_liv respondent_wall… rooms
+    <dbl> <chr>   <dttm>                  <dbl>     <dbl> <chr>            <dbl>
+ 1      1 God     2016-11-17 00:00:00         3         4 muddaub              1
+ 2      1 God     2016-11-17 00:00:00         7         9 muddaub              1
+ 3      3 God     2016-11-17 00:00:00        10        15 burntbricks          1
+ 4      4 God     2016-11-17 00:00:00         7         6 burntbricks          1
+ 5      5 God     2016-11-17 00:00:00         7        40 burntbricks          1
+ 6      6 God     2016-11-17 00:00:00         3         3 muddaub              1
+ 7      7 God     2016-11-17 00:00:00         6        38 muddaub              1
+ 8      8 Chirod… 2016-11-16 00:00:00        12        70 burntbricks          3
+ 9      9 Chirod… 2016-11-16 00:00:00         8         6 burntbricks          1
+10     10 Chirod… 2016-12-16 00:00:00        12        23 burntbricks          5
+# … with 121 more rows, and 11 more variables: memb_assoc <chr>,
+#   affect_conflicts <chr>, liv_count <dbl>, items_owned <chr>, no_meals <dbl>,
+#   months_lack_food <chr>, instanceID <chr>, day <int>, month <dbl>, year <dbl>,
+#   people_per_room <dbl>
+\end{verbatim}
+
+\textbf{22/10/19 - 6:32pm}
+
+Now using a filter to remove NULL data
+
+\begin{verbatim}
+    interviews %>%
+    filter(!is.na(memb_assoc)) %>%
+    mutate(people_per_room = no_membrs / rooms)
+\end{verbatim}
+
+which returned \begin{verbatim}
+    # A tibble: 92 x 18
+   key_ID village interview_date      no_membrs years_liv respondent_wall… rooms
+    <dbl> <chr>   <dttm>                  <dbl>     <dbl> <chr>            <dbl>
+ 1      1 God     2016-11-17 00:00:00         7         9 muddaub              1
+ 2      7 God     2016-11-17 00:00:00         6        38 muddaub              1
+ 3      8 Chirod… 2016-11-16 00:00:00        12        70 burntbricks          3
+ 4      9 Chirod… 2016-11-16 00:00:00         8         6 burntbricks          1
+ 5     10 Chirod… 2016-12-16 00:00:00        12        23 burntbricks          5
+ 6     12 God     2016-11-21 00:00:00         7        20 burntbricks          3
+ 7     13 God     2016-11-21 00:00:00         6         8 burntbricks          1
+ 8     15 God     2016-11-21 00:00:00         5        30 sunbricks            2
+ 9     21 God     2016-11-21 00:00:00         8        20 burntbricks          1
+10     24 Ruaca   2016-11-21 00:00:00         6         4 burntbricks          2
+# … with 82 more rows, and 11 more variables: memb_assoc <chr>,
+#   affect_conflicts <chr>, liv_count <dbl>, items_owned <chr>, no_meals <dbl>,
+#   months_lack_food <chr>, instanceID <chr>, day <int>, month <dbl>, year <dbl>,
+#   people_per_room <dbl>
+\end{verbatim}
+
+! negates the result, so we are asking when it is NOT NULL.
+
+\subsection{Split-apply-combine data analysis and the summarize() function}
+
+\subsubsection{The summarize() function}
+
+\textbf{22/10/19 - 7:01pm}
+
+Using group by and summarize functions.
+
+\begin{verbatim}
+    interviews %>%
+    group_by(village) %>%
+    summarize(mean_no_membrs = mean(no_membrs))
+\end{verbatim}
+
+R returned \begin{verbatim}
+    # A tibble: 3 x 2
+  village  mean_no_membrs
+  <chr>             <dbl>
+1 Chirodzo           7.08
+2 God                6.86
+3 Ruaca              7.57
+\end{verbatim}
+
+\textbf{22/10/19 - 7:59pm}
+
+Grouping by multiple columns.
+
+Used this code \begin{verbatim}
+    interviews %>%
+    group_by(village, memb_assoc) %>%
+    summarize(mean_no_membrs = mean(no_membrs))
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 9 x 3
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs
+  <chr>    <chr>               <dbl>
+1 Chirodzo no                   8.06
+2 Chirodzo yes                  7.82
+3 Chirodzo NA                   5.08
+4 God      no                   7.13
+5 God      yes                  8   
+6 God      NA                   6   
+7 Ruaca    no                   7.18
+8 Ruaca    yes                  9.5 
+9 Ruaca    NA                   6.22
+\end{verbatim}
+
+\textbf{22/10/19 - 8:05pm}
+
+Excluding data from our table using a filter step. Use the code \begin{verbatim}
+    interviews %>%
+    filter(!is.na(memb_assoc)) %>%
+    group_by(village, memb_assoc) %>%
+    summarize(mean_no_membrs = mean(no_membrs))
+\end{verbatim}
+
+Returned this \begin{verbatim}
+    # A tibble: 6 x 3
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs
+  <chr>    <chr>               <dbl>
+1 Chirodzo no                   8.06
+2 Chirodzo yes                  7.82
+3 God      no                   7.13
+4 God      yes                  8   
+5 Ruaca    no                   7.18
+6 Ruaca    yes                  9.5 
+\end{verbatim}
+
+\textbf{22/10/19 - 8:08pm}
+
+Summarise multiple variables at the same time. Used the code \begin{verbatim}
+    interviews %>%
+    filter(!is.na(memb_assoc)) %>%
+    group_by(village, memb_assoc) %>%
+    summarize(mean_no_membrs = mean(no_membrs),
+              min_membrs = min(no_membrs))
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_members
+  <chr>    <chr>               <dbl>       <dbl>
+1 Chirodzo no                   8.06           4
+2 Chirodzo yes                  7.82           2
+3 God      no                   7.13           3
+4 God      yes                  8              5
+5 Ruaca    no                   7.18           2
+6 Ruaca    yes                  9.5            5
+\end{verbatim}
+
+\textbf{22/10/19 - 8:12pm}
+
+Rearrange the result of a query to inspect the values. Used the code \begin{verbatim}
+    interviews %>% 
+  filter(!is.na(memb_assoc)) %>% 
+  group_by(village, memb_assoc) %>% 
+  summarize(mean_no_membrs = mean(no_membrs), min_membrs = min(no_membrs)) %>% 
+  arrange(min_membrs)
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_membrs
+  <chr>    <chr>               <dbl>      <dbl>
+1 Chirodzo yes                  7.82          2
+2 Ruaca    no                   7.18          2
+3 God      no                   7.13          3
+4 Chirodzo no                   8.06          4
+5 God      yes                  8             5
+6 Ruaca    yes                  9.5           5
+\end{verbatim}
+
+\textbf{22/10/19 - 8:14pm}
+
+Sort in descending order. Used this code \begin{verbatim}
+    interviews %>% 
+  filter(!is.na(memb_assoc)) %>% 
+  group_by(village, memb_assoc) %>% 
+  summarize(mean_no_membrs = mean(no_membrs), min_membrs = min(no_membrs)) %>%
+  arrange(desc(min_membrs))
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 6 x 4
+# Groups:   village [3]
+  village  memb_assoc mean_no_membrs min_membrs
+  <chr>    <chr>               <dbl>      <dbl>
+1 God      yes                  8             5
+2 Ruaca    yes                  9.5           5
+3 Chirodzo no                   8.06          4
+4 God      no                   7.13          3
+5 Chirodzo yes                  7.82          2
+6 Ruaca    no                   7.18          2
+\end{verbatim}
+
+\subsubsection{Counting}
+
+\textbf{22/10/19 - 8:17pm}
+
+Count the number of rows of data for each village. Used the code \begin{verbatim}
+    interviews %>% 
+  count(village)
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 3 x 2
+  village      n
+  <chr>    <int>
+1 Chirodzo    39
+2 God         43
+3 Ruaca       49
+\end{verbatim}
+
+\textbf{22/10/19 - 8:18pm}
+
+Using 'sort' to get the results in decreasing order. Used the code \begin{verbatim}
+    interviews %>% 
+  count(village, sort = TRUE)
+\end{verbatim}
+
+Returned with this \begin{verbatim}
+    # A tibble: 3 x 2
+  village      n
+  <chr>    <int>
+1 Ruaca       49
+2 God         43
+3 Chirodzo    39
+\end{verbatim}
+
+\subsection{Reshaping with gather and spread}
+
+\subsubsection{Spreading}
+
+\textbf{22/10/19 - 8:31pm}
+
+Used the code \begin{verbatim}
+    interviews_spread <- interviews %>%
+    mutate(wall_type_logical = TRUE) %>%
+    spread(key = respondent_wall_type, value = wall_type_logical, fill = FALSE)
+\end{verbatim}
+
+Not sure what happened here, if anything?
+
+\subsection{Gathering}
+
+\textbf{22/10/19 - 8:34pm}
+
+Used the code \begin{verbatim}
+    interviews_gather <- interviews_spread %>%
+    gather(key = respondent_wall_type, value = "wall_type_logical",
+           burntbricks:sunbricks)
+\end{verbatim}
+
+Also used the code \begin{verbatim}
+    interviews_gather <- interviews_spread %>%
+    gather(key = "respondent_wall_type", value = "wall_type_logical",
+           burntbricks:sunbricks) %>%
+    filter(wall_type_logical) %>%
+    select(-wall_type_logical)
+\end{verbatim}
+
+Again, not sure what happened here...
+
+\subsection{Applying spread() to clean our data}
+
+\textbf{22/10/19 - 8:40pm}
+
+Used the code \begin{verbatim}
+    interviews_items_owned <- interviews %>%
+  separate_rows(items_owned, sep=";") %>%
+  mutate(items_owned_logical = TRUE) %>%
+  spread(key = items_owned, value = items_owned_logical, fill = FALSE)
+
+nrow(interviews_items_owned)
+\end{verbatim}
+
+Returned with \begin{verbatim}
+    [1] 131
+\end{verbatim}
+
+\textbf{22/10/19 - 8:41pm}
+
+Entered \begin{verbatim}
+    interviews_items_owned <- interviews_items_owned %>%
+    rename(no_listed_items = `<NA>`)
+\end{verbatim}
+
+\textbf{22/10/19 - 8:43pm}
+
+Show the number of respondents in each village who owned a particular item \begin{verbatim}
+    interviews_items_owned %>%
+  filter(bicycle) %>%
+  group_by(village) %>%
+  count(bicycle)
+\end{verbatim}
+
+and returned \begin{verbatim}
+    # A tibble: 3 x 3
+# Groups:   village [3]
+  village  bicycle     n
+  <chr>    <lgl>   <int>
+1 Chirodzo TRUE       17
+2 God      TRUE       23
+3 Ruaca    TRUE       20
+\end{verbatim}
+
+\textbf{22/10/19 - 8:45pm}
+
+Calculate the average number of items from the list owned by respondents in each village. Used the code \begin{verbatim}
+    interviews_items_owned %>%
+    mutate(number_items = rowSums(select(., bicycle:television))) %>%
+    group_by(village) %>%
+    summarize(mean_items = mean(number_items))
+\end{verbatim}
+
+which returned \begin{verbatim}
+    # A tibble: 3 x 2
+  village  mean_items
+  <chr>         <dbl>
+1 Chirodzo       4.54
+2 God            3.98
+3 Ruaca          5.57
+\end{verbatim}
+
+\subsection{Exporting data}
+
+Followed the lesson and used this code \begin{verbatim}
+    interviews_plotting <- interviews %>%
+    ## spread data by items_owned
+    separate_rows(items_owned, sep=";") %>%
+    mutate(items_owned_logical = TRUE) %>%
+    spread(key = items_owned, value = items_owned_logical, fill = FALSE) %>%
+    rename(no_listed_items = `<NA>`) %>%
+    ## spread data by months_lack_food
+    separate_rows(months_lack_food, sep=";") %>%
+    mutate(months_lack_food_logical = TRUE) %>%
+    spread(key = months_lack_food, value = months_lack_food_logical, fill = FALSE) %>%
+    ## add some summary columns
+    mutate(number_months_lack_food = rowSums(select(., Apr:Sept))) %>%
+    mutate(number_items = rowSums(select(., bicycle:television)))
+\end{verbatim}
+
+and
+
+\begin{verbatim}
+    write_csv(interviews_plotting, path = "data_output/interviews_plotting.csv")
+\end{verbatim}
+
 \newpage
 \section{R for Social Scientists Exercises}
 
@@ -697,6 +1163,235 @@ For this exercise, I used these codes in this order:
 \textbf{Result:} Please see the below plot.
 
 \includegraphics[width=\textwidth]{Rplot02.png}
+
+\subsection{Pipes}
+
+\textbf{22/10/19 - 6:25pm}
+
+\textbf{Objective:} Using pipes, subset the interviews data to include interviews where respondents were members of an irrigation association (memb\_assoc) and retain only the columns affect\_conflicts, liv\_count, and no\_meals.
+
+\textbf{Action:} Used this code \begin{verbatim}
+    interviews %>%
+    filter(memb_assoc == "yes") %>%
+    select(affect_conflicts, liv_count, no_meals)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} RStudio returned me this. \begin{verbatim}
+    # A tibble: 33 x 3
+   affect_conflicts liv_count no_meals
+   <chr>                <dbl>    <dbl>
+ 1 once                     3        2
+ 2 never                    2        2
+ 3 never                    2        3
+ 4 once                     3        2
+ 5 frequently               1        3
+ 6 more_once                5        2
+ 7 more_once                3        2
+ 8 more_once                2        3
+ 9 once                     3        3
+10 never                    3        3
+# … with 23 more rows
+\end{verbatim}
+
+\subsection{Mutate}
+
+\textbf{22/10/19 - 6:44pm}
+
+\textbf{Objective:} Create a new data frame from the interviews data that meets the following criteria: contains only the village column and a new column called total\_meals containing a value that is equal to the total number of meals served in the household per day on average (no\_membrs times no\_meals). Only the rows where total\_meals is greater than 20 should be shown in the final data frame.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews_total_meals <- interviews %>%
+    mutate(total_meals = no_membrs * no_meals) %>%
+    filter(total_meals > 20) %>%
+    select(village, total_meals)
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Nothing appeared.
+
+\textbf{22/10/19 - 6:50pm}
+
+Trying again.
+
+\textbf{Objective:} Create a new data frame from the interviews data that meets the following criteria: contains only the village column and a new column called total\_meals containing a value that is equal to the total number of meals served in the household per day on average (no\_membrs times no\_meals). Only the rows where total\_meals is greater than 20 should be shown in the final data frame.
+
+\textbf{Action:} Used the code and entered each line individually this time. \begin{verbatim}
+    interviews_total_meals <- interviews %>%
+    mutate(total_meals = no_membrs * no_meals) %>%
+    filter(total_meals > 20) %>%
+    select(village, total_meals)
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Nothing appeared. I don't get it. I'm moving on.
+
+EDIT: It did work. I typed in \begin{verbatim}
+    interviews_total_meals
+\end{verbatim} and it had shown that contents of the object. Therefore it was user error.
+
+\subsection{Split-apply-combine data analysis and the summarize() function - counting}
+
+\textbf{22/10/19 - 8:21pm}
+
+\textbf{Objective:} Find out how many households in the survey have an average of two meals per day? Three meals per day?
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews %>% 
+  count(no_meals)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} R returned this \begin{verbatim}
+    # A tibble: 2 x 2
+  no_meals     n
+     <dbl> <int>
+1        2    52
+2        3    79
+\end{verbatim}
+
+Households who have two meals a day are 52 in number. 79 have three a day.
+
+\textbf{22/10/19 - 8:24pm}
+
+\textbf{Objective:} Use group\_by() and summarize() to find the mean, min, and max number of household members for each village.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews %>%
+  group_by(village) %>%
+  summarize(
+      mean_no_membrs = mean(no_membrs),
+      min_no_membrs = min(no_membrs),
+      max_no_membrs = max(no_membrs),
+      n = n()
+  )
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} R returned this \begin{verbatim}
+    # A tibble: 3 x 5
+  village  mean_no_membrs min_no_membrs max_no_membrs     n
+  <chr>             <dbl>         <dbl>         <dbl> <int>
+1 Chirodzo           7.08             2            12    39
+2 God                6.86             3            15    43
+3 Ruaca              7.57             2            19    49
+\end{verbatim}
+
+\textbf{22/10/19 - 8:26pm}
+
+\textbf{Objective:} Find out what was the largest household interviewed in each month?
+
+\textbf{Action:} Loaded lubridate by using the code \begin{verbatim}
+    library(lubridate)
+\end{verbatim}
+
+Then used this code \begin{verbatim}
+    interviews %>%
+  mutate(month = month(interview_date),
+         day = day(interview_date),
+         year = year(interview_date)) %>%
+  group_by(year, month) %>%
+  summarize(max_no_membrs = max(no_membrs))
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} R returned \begin{verbatim}
+    # A tibble: 5 x 3
+# Groups:   year [2]
+   year month max_no_membrs
+  <dbl> <dbl>         <dbl>
+1  2016    11            19
+2  2016    12            12
+3  2017     4            17
+4  2017     5            15
+5  2017     6            15
+\end{verbatim}
+
+\subsection{Applying spread() to clean our data}
+
+\textbf{22/10/19 - 8:49pm}
+
+\textbf{Objective:} Create a new data frame (named interviews\_months\_lack\_food) that has one column for each month and records TRUE or FALSE for whether each interview respondent was lacking food in that month.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews_months_lack_food <- interviews %>%
+  separate_rows(months_lack_food, sep=";") %>%
+  mutate(months_lack_food_logical  = TRUE) %>%
+  spread(key = months_lack_food, value = months_lack_food_logical, fill = FALSE)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Correct.
+
+\textbf{22/10/19 - 8:52pm}
+
+\textbf{Objective:} Find out how many months (on average) were respondents without food if they did belong to an irrigation association?
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews_months_lack_food %>%
+  mutate(number_months = rowSums(select(., Apr:Sept))) %>%
+  group_by(memb_assoc) %>%
+  summarize(mean_months = mean(number_months))
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success. R returned with \begin{verbatim}
+    # A tibble: 3 x 2
+  memb_assoc mean_months
+  <chr>            <dbl>
+1 no                2.31
+2 yes               2.64
+3 NA                2.95
+\end{verbatim}
+
+\newpage
+\section{R Error List}
+
+\subsection{Mutate}
+
+\textbf{22/10/19 - 6:44pm}
+
+\textbf{Objective:} Create a new data frame from the interviews data that meets the following criteria: contains only the village column and a new column called total\_meals containing a value that is equal to the total number of meals served in the household per day on average (no\_membrs times no\_meals). Only the rows where total\_meals is greater than 20 should be shown in the final data frame.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    interviews_total_meals <- interviews %>%
+    mutate(total_meals = no_membrs * no_meals) %>%
+    filter(total_meals > 20) %>%
+    select(village, total_meals)
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Nothing appeared.
+
+\textbf{22/10/19 - 6:50pm}
+
+Trying again.
+
+\textbf{Objective:} Create a new data frame from the interviews data that meets the following criteria: contains only the village column and a new column called total\_meals containing a value that is equal to the total number of meals served in the household per day on average (no\_membrs times no\_meals). Only the rows where total\_meals is greater than 20 should be shown in the final data frame.
+
+\textbf{Action:} Used the code and entered each line individually this time. \begin{verbatim}
+    interviews_total_meals <- interviews %>%
+    mutate(total_meals = no_membrs * no_meals) %>%
+    filter(total_meals > 20) %>%
+    select(village, total_meals)
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Nothing appeared. I don't get it. I'm moving on.
+
+EDIT: It did work. I typed in \begin{verbatim}
+    interviews_total_meals
+\end{verbatim} and it had shown that contents of the object. Therefore it was user error.
 
 \newpage
 \section{Proof of Concept}
@@ -862,9 +1557,9 @@ Maybe I should try the head and tail commands as suggested in the Unix SWC lesso
 \textbf{Action:} Used the following code:\begin{verbatim}
     for filename in 1973-11-13_UnverantwortlicherEntscheid.txt
     1973-11-21_FIFA-Haltungbefremdend.txt 
-    > do
-    > head -n 2 $filename | tail -n 1
-    > done
+    do
+    head -n 2 $filename | tail -n 1
+    done
 \end{verbatim}
 
 \textbf{Error:} None.
@@ -882,8 +1577,8 @@ Now to see if I can work with variables to get the titles from \emph{all} the .t
 
 \textbf{Action:} Used the commands:\begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1
-    > done
+    do head -n 2 $filename | tail -n 1
+    done
 \end{verbatim}
 
 \textbf{Error:} None.
@@ -907,9 +1602,9 @@ Now to see if I can create a new text file with all titles in it.
 
 \textbf{Action:} Used the following code: \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1
-    > cat $filename >> articletitles.txt
-    > done
+    do head -n 2 $filename | tail -n 1
+    cat $filename >> articletitles.txt
+    done
 \end{verbatim}
 
 \textbf{Error:} Yes, and error! It didn't work exactly as planned. 
@@ -926,8 +1621,8 @@ Now to see if I can create a new text file with all titles in it.
 
 \textbf{Action:} Used the following code: \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
-    > done\end{verbatim}
+    do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
+    done\end{verbatim}
 
 \textbf{Error:} Same error as before...
 
@@ -941,8 +1636,8 @@ After conceptualising it step by step in my mind, I think I know the code I shou
 
 \textbf{Action:} Used the following code: \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1
-    > done > articletitles.txt \end{verbatim}
+    do head -n 2 $filename | tail -n 1
+    done > articletitles.txt \end{verbatim}
 
 \textbf{Error:} None! Finally!
 
@@ -961,6 +1656,136 @@ The last step is to move the newly created articletitles.txt file to the corpus\
 \textbf{Error:} None.
 
 \textbf{Result:} articletitles.txt moved from corpus\_input directory to the corpus\_output directory.
+
+\textbf{18/10/19 - 12:25pm}
+
+Now that I have figured out how to extract just the title, I want to see if I can write a command that will extract the title and the subtitle from a .txt file.
+
+\textbf{Objective:} Extract the title and the subtitle from a .txt file.
+
+\textbf{Action:} Use the code: \begin{verbatim}
+    head -n 3 1973-11-13_UnverantwortlicherEntscheid.txt | tail -n 2
+\end{verbatim} (because I know this article definitely has a subtitle)
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned this \begin{verbatim}
+    Unverantwortlicher Entscheid
+    Generalsekretariat der FIFA brüskiert die Weltöffentlichkeit
+\end{verbatim} which is the title and subtitle. So success!
+
+\textbf{18/10/19 - 12:28pm}
+
+Now to see if I can do it as a loop to target all the .txt files in the corpus\_input directory.
+
+\textbf{Objective:} Extract the title and the subtitle from all .txt files in the corpus\_input directory.
+
+\textbf{Action:} Used the code: \begin{verbatim}
+    for filename in *.txt
+    do head -n 3 $filename | tail -n 2
+    done \end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned this \begin{verbatim}
+    Unverantwortlicher Entscheid
+    Generalsekretariat der FIFA brüskiert die Weltöffentlichkeit
+    Australien qualifiziert
+
+    Kurz berichtet
+
+    Die falschen Garantien der chilenischen Junta
+
+    Bulgarien qualifiziert
+
+    Holland nach 0:0 gegen Belgien qualifiziert
+
+    FIFA-Haltung befremdend
+    TASS: Augen vor den bekannten Tatsachen verschlossen
+    Nun im Nepstadion Sieg für Nationalelf 1:0
+    Die Entscheidung fiel durch ein Kopfballtor von Lauck
+\end{verbatim} which are the titles and subtitles from all the articles in the corpus\_input directory. Another success!
+
+\textbf{18/10/19 - 12:34pm}
+
+Last step for the titles and subtitles.
+
+\textbf{Objective:} Create a new text file filled with all the titles of the articles and move that file to the corpus\_output directory.
+
+\textbf{Action:} Use the code: \begin{verbatim}
+    for filename in *.txt
+    do head -n 3 $filename | tail -n 2
+    done > articletitlessubtitles.txt
+    mv articletitlessubtitles.txt ../corpus_output/articlestitlessubtitles.txt
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success! A new file called articlestitlessubtitles.txt was created in the corpus\_output directory. This .txt file contains all the titles and subtitles from the newspaper articles.
+
+\textbf{18/10/19 - 1:25pm}
+
+I am currently at consultation hours to ask Brian some questions. After being initially happy with what I did last night regarding Terminal, I realised I need to create the same number of .txt files that I have from the input. This will help with better analysis in Voyant.
+
+\textbf{Objective:} Extract titles from the .txt files in corpus\_input and create corresponding files in corpus\_output with just the titles.
+
+\textbf{Action:} Used the code: \begin{verbatim}
+    for filename in *.txt
+    do head -n 2 $filename | tail -n 1 > ../corpus_output/title-${filename}
+    done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success! New .txt files created in corpus\_output that contain just the titles.
+
+\textbf{18/10/19 - 1:35pm}
+
+Taking a step back, I now realised I may need to make mroe directories that are more specific with the output it contains. I may need to develop commands that creates these directories.
+
+\textbf{Objective:} Write commands that create the directories necessary for this PoC.
+
+\textbf{Action:} Use the code: \begin{verbatim}
+    mkdir data
+    mkdir data/corpus_input/
+    mkdir data/corpus_output/
+    mkdir data/corpus_output/titles/
+    mkdir data/corpus_output/titlessubtitles/
+    mkdir data/corpus_output/body/
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success! All directories were created. This step would probably be the first thing that needs to happen.
+
+\textbf{18/10/19 - 1:45pm}
+
+\textbf{Objective:} Create .txt files in the corpus\_output/titles/ directory that contain titles only.
+
+\textbf{Action:} Back in the corpus\_input directory. Use the code: \begin{verbatim}
+    for filename in *.txt
+    do head -n 2 $filename | tail -n 1 > ../corpus_output/titles/title-${filename}
+    done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success. .txt files created in the corpus\_output/titles/ directory.
+
+\textbf{18/10/19 - 5:00pm}
+
+\textbf{Objective:} Create .txt files in the corpus\_output/titlessubtitles/ directory that contain titles and subtitles.
+
+\textbf{Action:} Use the code: \begin{verbatim}
+    for filename in *.txt
+    do head -n 3 $filename | tail -n 2 >
+    ../corpus_output/titlessubtitles/titlesubtitles-${filename}
+    done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Succcess. Objective achieved.
 
 \subsubsection{Identify Themes}
 
@@ -1238,9 +2063,9 @@ Now to see if I can create a new text file with all titles in it.
 
 \textbf{Action:} Used the following code: \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1
-    > cat $filename >> articletitles.txt
-    > done
+    do head -n 2 $filename | tail -n 1
+    cat $filename >> articletitles.txt
+    done
 \end{verbatim}
 
 \textbf{Error:} Yes, and error! It didn't work exactly as planned. 
@@ -1257,14 +2082,28 @@ Now to see if I can create a new text file with all titles in it.
 
 \textbf{Action:} Used the following code: \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
-    > done\end{verbatim}
+    do head -n 2 $filename | tail -n 1 | cat $filename >> articletitles.txt
+    done\end{verbatim}
 
 \textbf{Error:} Same error as before...
 
 \textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files.
 
+\newpage
 \subsection{Proof of Concept Solutions}
+
+\subsubsection{Make directories}
+
+The following code will create the directories needed for this PoC. This would need to occur before any other script is run.
+
+\begin{verbatim}
+    mkdir data
+    mkdir data/corpus_input/
+    mkdir data/corpus_output/
+    mkdir data/corpus_output/titles/
+    mkdir data/corpus_output/titlessubtitles/
+    mkdir data/corpus_output/body/
+\end{verbatim}
 
 \subsubsection{Extracting titles from the selection of articles}
 
@@ -1272,12 +2111,33 @@ Using the following code, one could extract just the title from each of the news
 
 \begin{verbatim}
     for filename in *.txt
-    > do head -n 2 $filename | tail -n 1
-    > done > articletitles.txt
+    do head -n 2 $filename | tail -n 1
+    done > articletitles.txt
     mv articletitles.txt ../corpus_output/articletitles.txt
 \end{verbatim}
 
 The next step is to recreate these set of commands as a script.
+
+\textbf{UPDATE}
+
+The following code is able to create new .txt files in the corpus\_output directory that contain the title only.
+
+\begin{verbatim}
+    for filename in *.txt
+    do head -n 2 $filename | tail -n 1 > ../corpus_output/title-${filename}
+    done
+\end{verbatim}
+
+\subsubsection{Extracting titles and subtitles from the selection of articles}
+
+Using the following code, one could extract the titles and subtitles from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an articletitles.txt file in the corpus\_output directory.
+
+\begin{verbatim}
+    for filename in *.txt
+    do head -n 3 $filename | tail -n 2
+    done > articletitlessubtitles.txt
+    mv articletitlessubtitles.txt ../corpus_output/articlestitlessubtitles.txt
+\end{verbatim}
 
 \newpage
 \section{Misc Notes on FOAR705}
