@@ -1480,6 +1480,18 @@ A few things have transpired since the last update.
     \item I still have not had any luck finding an API for Voyant. I feel like giving up on this front and focus instead on writing a script that will help me manipulate the .txt files.
 \end{itemize}
 
+\textbf{23/10/19 - 5:19pm}
+
+I have spent the past two hours looking for a way to having Voyant automatically open up files I stored in corpus\_output. I have not found anything. I feel like I'm wasting my time with this.
+
+\textbf{23/10/19 - 5:39pm}
+
+I have stumbled on a helpful video tutorial that explains Textual Analysis in R. 
+
+https://www.youtube.com/watch?v=pFinlXYLZ-A
+
+I think I will forego use of Voyant and try to use R instead.
+
 \newpage
 \subsection{Proof of Concept Design - User Stories}
 
@@ -1787,6 +1799,115 @@ Taking a step back, I now realised I may need to make mroe directories that are 
 
 \textbf{Result:} Succcess. Objective achieved.
 
+\textbf{23/10/19 - 1:13pm}
+
+\textbf{Objective} Extract the body of the articles. Will attempt this with one article first.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    tail -n +6 1973-11-13_UnverantwortlicherEntscheid.txt 
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned this \begin{verbatim}
+Berlin (ADN). Einen unverantwortlichen und allen moralischen Prinzipien
+hohnsprechenden Entscheid traf am Montag das Generalsekretariat der
+Internationalen Fußballföderation (FIFA). Wie aus einer Presseerklärung
+des Generalsekretariats der FIFA hervorgeht, brüskierte der
+Weltfußballverband die berechtigte Forderung des sowjetischen
+Fußballverbandes, vieler Sportler und der Weltöffentlichkeit, das
+Weltmeisterschafts-Qualifikationsspiel Chile gegen Sowjetunion in einem
+anderen Lande auszutragen, erklärte Chile zum' Endrundenteilnehmer an der
+Weltmeisterschaft und drohte dem sowjetischen Verband darüber hinaus
+weitere Strafen an. Damit stellt sich das Generalsekretariat der FIFA
+gegen die in einer weltweiten Protestbewegung Zum Ausdruck gekommene
+internationale Meinung, daß es für die Mannschaft der Sowjetunion wie für
+die anderer Länder aus menschlichen und moralischen Gründen unvereinbar
+ist, auf der mit dem Blut chilenischer Patrioten getränkten Erde des
+Andenlandes Fußball zu spielen. Die Erklärung richtet sich Zugleich gegen
+die Meinung einer Reihe von nationalen Fußballverbänden — so dem
+Fußballverband der DDR —, die sich mit der Haltung der Sowjetunion
+solidarisch erklärt haben. Die Weltöffentlichkeit erwartet, daß das
+Exekutivkomitee der FIFA sofort zusammentritt und diesen Entscheid des
+Generalsekretariats aufhebt.
+\end{verbatim}
+
+That is the BODY only and not the other bits of information. So it seems that is a success.
+
+\textbf{23/10/19 - 2:05pm}
+
+\textbf{Objective:} Try using the code with another .txt file to see if it works.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    tail -n +6 1973-11-19_Hollandnach0-0gegenBelgienqualifiziert.txt
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Terminal returned this. \begin{verbatim}
+Durch ein 0:0-Unentschieden gegen Belgien im letzten Spiel der
+Europagruppe 3 qualifizierte sich die niederländische Nationalmannschaft
+am Sonntag in Amsterdam lediglich durch das bessere Torverhältnis für die
+Endrunde der Fußball-Weltmeisterschaft 1974. Bereits im ersten Treffen
+beider Länder war kein Tor gefallen.
+1. Niederlande 24:2 10:2
+2. Belgien 13:0 10:2
+3. Norwegen 9:16 4:8
+4. Island 2:29 0:12
+Bulgariens Fußball-Nationalmannschaft, die bereits seit Mittwoch als
+Endrundenteilnehmer feststeht, besiegte am Sonntag in Sofia im letzten
+Spiel der WM- Qualifikationsgruppe 6 Zypern mit 2:0 (1:0) Toren. Die
+Treffer der Gastgeber erzielten Konew (2.) und Denew (68.).
+1. Bulgarien 13:3 10:2
+2. Portugal 10:8 7:5
+3. Nordirland 5:6 5:7
+4. Zypern 1:14 2:10
+In der Europagruppe 2 gewann die Türkei gegen die Schweiz mit 2:0, jedoch
+stand Italien bereits als Endrundenteilnehmer fest.
+1. Italien 12:0 10:2
+2. Türkei 5:3 6:6
+3. Schweiz 2:4 6:6
+4. Luxemburg 2:14 2:10
+In der Afrika-Endrunde besiegte Zaire am Sonntag in Kinshasa die Auswahl
+Sambias mit 2:1 (1:1) Toren. Die Gastgeber hatten bereits das erste
+Treffen gegen Sambia mit 2:0 zu ihren Gunsten entschieden.
+1. Zaire 4:1 4:0
+2. Sambia 5:4 2:4
+3. Marokko 0:4 0:2
+\end{verbatim}
+
+which is the BODY of that .txt file.
+
+\textbf{23/10/19 - 2:10pm}
+
+Now that I know it works on two separate files, I need to know if it will work with a very long article. I have created a new .txt file called lengthtest.txt which is a duplicate of one of the articles. I then copied the body four times to increase the length.
+
+\textbf{Objective:} Run a stressor test with a long .txt file to see if it still works.
+
+\textbf{Action:} Ran the code \begin{verbatim}
+    tail -n +6 lengthtest.txt 
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} A very long block of text was returned. I won't paste the code here because its too long. As such, this test was a success and the code isn't broken with a long .txt file.
+
+\textbf{23/10/19 - 2:17pm}
+
+Now to see if the command can work in a loop to target all .txt files.
+
+\textbf{Objective:} Use unix command to extract the body of each article and create new .txt files that are in the corpus\_output directory.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} New .txt files in the /corpus\_output/body/ directory created that contain only the body text of their respective articles. SUCCESS!
+
 \subsubsection{Identify Themes}
 
 \textbf{16/9/19 - 4:05pm}
@@ -1839,6 +1960,280 @@ Taking a step back, I now realised I may need to make mroe directories that are 
 \textbf{Result:} VoyantServer is running. It also opens up a window in my default browser.
 
 \includegraphics[width=\textwidth]{voyantserver.png}
+
+\textbf{23/10/19 - 3:13pm}
+
+Now that I have Voyant Server running on my machine, I want to see if I can change the Voyant Server settings so that it will automatically open a directory and use .txt files wherein to make a new corpus.
+
+\textbf{Objective:} Change serversettings.txt in the Voyant Server data folder to point to the corpus\_output/body/ directory to open up the body .txt files.
+
+\textbf{Action:} Changed \begin{verbatim}
+    uri_path = 
+\end{verbatim}
+
+to \begin{verbatim}
+    uri_path = /?input=/Users/janakin/Documents/PoC/data/corpus_output/body/
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Voyant server opened up an analysis window, but only analysed the path itself, i.e. it analysed janakin, Documents, PoC, data, corpus, output and body.
+
+\textbf{23/10/19 - 9:36pm}
+
+After doing some reading around on various tutorials on numerous websites, I think I will try to use R for textual analysis instead of Voyant.
+
+\textbf{Objective:} Create new RStudio Project
+
+\textbf{Action:} Created 'textualanalysis' project in the PoC directory.
+
+\textbf{Error:} None.
+
+\textbf{Result:} textualanalysis.Rproj created in PoC directory.
+
+\textbf{23/10/19 - 9:39pm}
+
+\textbf{Objective:} Create new R script and save it as textualanalyis.R
+
+\textbf{Action:} New File - R Script. Saved R Script as textualanalysis.r in PoC/textualanalysis/
+
+\textbf{Error:} None.
+
+\textbf{Result:} R Script textualanalysis.r saved in PoC/textualanalysis/
+
+\textbf{23/10/19 - 9:43pm}
+
+From the tutorials I read, I will need to use the tm and wordcloud packages.
+
+\textbf{Objective:} Install and load tm and wordcloud libraries.
+
+\textbf{Action:} Used the code
+
+\begin{verbatim}
+    if(!require(tm)){
+  install.packages("tm")
+  library(tm)
+}
+if(!require(wordcloud)){
+  install.packages("wordcloud")
+  library(wordcloud)
+}
+\end{verbatim}
+
+\textbf{Error:} None so far?
+
+\textbf{Result:} Code installs and loads packages.
+
+\textbf{23/10/19 - 9:47pm}
+
+Next step is to import the .txt files into R
+
+\textbf{Objective:} Import .txt files into R
+
+\textbf{Action:} Used code to locate the filepath folder \begin{verbatim}
+folder <- "/Users/janakin/Documents/PoC/data/corpus_output/body"
+\end{verbatim}
+
+then used \begin{verbatim}
+    filelist <- list.files(path=folder, pattern="*.txt")
+\end{verbatim}
+
+then used to link the file path with the folder \begin{verbatim}
+    filelist <- paste(folder, "/", filelist, sep="")
+\end{verbatim}
+
+then tested to see if it worked by using \begin{verbatim}
+    filelist
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} R console returned this \begin{verbatim}
+[1] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-13_UnverantwortlicherEntscheid.txt"             
+[2] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-14_Australienqualifiziert.txt"                  
+[3] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-14_Kurzberichtet.txt"                           
+[4] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-15_DiefalschenGarantienderchilenischenJunta.txt"
+[5] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-16_Bulgartonqualifiziert.txt"                   
+[6] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-19_Hollandnach0-0gegenBelgienqualifiziert.txt"  
+[7] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-21_FIFA-Haltungbefremdend.txt"                  
+[8] "/Users/janakin/Documents/PoC/data/corpus_output/body/
+body-1973-11-22_NunimNepstadionSiegfürNationalelf1-0.txt"  
+\end{verbatim}
+
+Which seems like it worked.
+
+\textbf{23/10/19 - 9:54pm}
+
+Now to get R to read the text from the .txt files.
+
+\textbf{Objective:} Get R to read the text from the .txt files.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    readtext <- lapply(filelist, FUN = readLines)
+\end{verbatim}
+
+\textbf{Error:} Some. \begin{verbatim}
+    Warning messages:
+1: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-14_Australienqualifiziert.txt'
+2: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-14_Kurzberichtet.txt'
+3: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-15_DiefalschenGarantienderchilenischenJunta.txt'
+4: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-16_Bulgartonqualifiziert.txt'
+\end{verbatim}
+
+However, the tutorial I read said that this would happen because some of the .txt files may have not finished with an ENTER command.
+
+\textbf{23/10/19 - 10:06pm}
+
+\textbf{Objective:} Collapse lines in the list into one big element. 
+
+\textbf{Action:} Used code \begin{verbatim}
+    corpus <- lapply(readtext, FUN = paste, collapse=" ")
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Elements collapsed successfully!
+
+\textbf{23/10/19 - 10:17pm}
+
+Now to convert the object corpus to something the tm package can use.
+
+\textbf{Objective:} Convert the object corpus to something the tm package can use.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus <- Corpus(VectorSource(corpus))
+\end{verbatim}
+
+Used \begin{verbatim}
+    VCorpus
+\end{verbatim} to test.
+
+\textbf{Error:} None.
+
+\textbf{Result:} R console returned this \begin{verbatim}
+    <<SimpleCorpus>>
+Metadata:  corpus specific: 1, document level (indexed): 0
+Content:  documents: 8
+\end{verbatim} so it seems it is successful.
+
+\textbf{23/10/19 - 10:25pm}
+
+\textbf{Objective:} Create new corpus object and remove whitespace.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+\end{verbatim}
+
+\textbf{Error:} I think? \begin{verbatim}
+    Warning message:
+In tm_map.SimpleCorpus(VCorpus, stripWhitespace) :
+  transformation drops documents
+\end{verbatim}
+
+\textbf{Result:} Despite the warning message, it still stripped whitespace.
+
+\textbf{23/10/19 - 10:29pm}
+
+\textbf{Objective:} Convert corpus to lower case
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus, content_transformer(tolower))
+\end{verbatim}
+
+\textbf{Error:} Same thing as the white space \begin{verbatim}
+    Warning message:
+In tm_map.SimpleCorpus(VCorpus, content_transformer(tolower)) :
+  transformation drops documents
+\end{verbatim}
+
+\textbf{Result:} Success despite warning message.
+
+\textbf{23/10/19 - 10:34pm}
+
+\textbf{Objective:} Remove German stop words
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+\end{verbatim}
+
+\textbf{Error:} Same as the past two code lines.
+
+\textbf{Result:} Success despite warning message.
+
+\textbf{23/10/19 - 10:37pm}
+
+\textbf{Objective:} Remove punctuation
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+\end{verbatim}
+
+\textbf{Error:} Same as the past three code lines.
+
+\textbf{Result:} Success despite warning message.
+
+\textbf{23/10/19 - 10:40pm}
+
+\textbf{Objective:} Create Term-Document Matrix so we can manipulate the data
+
+\textbf{Action:} Used the code \begin{verbatim}
+    dtm <- TermDocumentMatrix(VCorpus_clean)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} TermDocumentMatrix created.
+
+\textbf{23/10/19 - 10:45pm}
+
+\textbf{Objective:} Test dtm for what it returns
+
+\textbf{Action:} Used the code \begin{verbatim}
+    findFreqTerms(dtm, 5)
+\end{verbatim}
+
+Which will find terms that occur at least 5 times.
+
+\textbf{Error:} None.
+
+\textbf{Result:} R console returned this \begin{verbatim}
+[1] "fifa"                    
+[2] "fußballweltmeisterschaft"
+[3] "spiel"                   
+[4] "wurde"                   
+[5] "„"                       
+[6] "auswahl"                 
+[7] "ungarischen" 
+\end{verbatim}
+
+I think "„" appeared because it's not recognised as punctuation in English.
+
+\textbf{23/10/19 - 11:00pm}
+
+\textbf{Objective:} Remove "„" from corpus
+
+\textbf{Action:} Entered the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c("„"))
+\end{verbatim} into the script.
+
+\textbf{Error:} It didn't remove the "„"
+
+\textbf{Result:} It didn't remove the "„". I'll just move on for now and see if I can fix it later.
 
 \subsubsection{Store Analysis}
 
@@ -2089,6 +2484,130 @@ Now to see if I can create a new text file with all titles in it.
 
 \textbf{Result:} A new file 'articletitles.txt' was created in the directory. It seems to have created a .txt file with ALL the text from all the .txt files.
 
+\textbf{23/10/19 - 3:13pm}
+
+Now that I have Voyant Server running on my machine, I want to see if I can change the Voyant Server settings so that it will automatically open a directory and use .txt files wherein to make a new corpus.
+
+\textbf{Objective:} Change serversettings.txt in the Voyant Server data folder to point to the corpus\_output/body/ directory to open up the body .txt files.
+
+\textbf{Action:} Changed \begin{verbatim}
+    uri_path = 
+\end{verbatim}
+
+to \begin{verbatim}
+    uri_path = /?input=/Users/janakin/Documents/PoC/data/corpus_output/body/
+\end{verbatim}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} Voyant server opened up an analysis window, but only analysed the path itself, i.e. it analysed janakin, Documents, PoC, data, corpus, output and body.
+
+\textbf{23/10/19 - 9:54pm}
+
+Now to get R to read the text from the .txt files.
+
+\textbf{Objective:} Get R to read the text from the .txt files.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    readtext <- lapply(filelist, FUN = readLines)
+\end{verbatim}
+
+\textbf{Error:} Some. \begin{verbatim}
+    Warning messages:
+1: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-14_Australienqualifiziert.txt'
+2: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-14_Kurzberichtet.txt'
+3: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-15_DiefalschenGarantienderchilenischenJunta.txt'
+4: In FUN(X[[i]], ...) :
+  incomplete final line found on '/Users/janakin/Documents/PoC/data/
+corpus_output/body/body-1973-11-16_Bulgartonqualifiziert.txt'
+\end{verbatim}
+
+However, the tutorial I read said that this would happen because some of the .txt files may have not finished with an ENTER command.
+
+\textbf{23/10/19 - 10:25pm}
+
+\textbf{Objective:} Create new corpus object and remove whitespace.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+\end{verbatim}
+
+\textbf{Error:} I think? \begin{verbatim}
+    Warning message:
+In tm_map.SimpleCorpus(VCorpus, stripWhitespace) :
+  transformation drops documents
+\end{verbatim}
+
+\textbf{Result:} Despite the warning message, it still stripped whitespace.
+
+\textbf{23/10/19 - 10:29pm}
+
+\textbf{Objective:} Convert corpus to lower case
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus, content_transformer(tolower))
+\end{verbatim}
+
+\textbf{Error:} Same thing as the white space \begin{verbatim}
+    Warning message:
+In tm_map.SimpleCorpus(VCorpus, content_transformer(tolower)) :
+  transformation drops documents
+\end{verbatim}
+
+\textbf{Result:} Success despite warning message.
+
+\textbf{23/10/19 - 10:34pm}
+
+\textbf{Objective:} Remove German stop words
+
+\textbf{Action:} Used the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+\end{verbatim}
+
+\textbf{Error:} Same as the past two code lines.
+
+\textbf{Result:} Success despite warning message.
+
+\textbf{23/10/19 - 11:00pm}
+
+\textbf{Objective:} Remove "„" from corpus
+
+\textbf{Action:} Entered the code \begin{verbatim}
+    VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c("„"))
+\end{verbatim} into the script.
+
+\textbf{Error:} It didn't remove the "„"
+
+\textbf{Result:} It didn't remove the "„". I'll just move on for now and see if I can fix it later.
+
+\textbf{23/10/19 - 11:04pm}
+
+\textbf{Objective:} To get list of frequent words
+
+\textbf{Action:} Used the code \begin{verbatim}
+    m <- as.matrix(dtm)
+    v <- sort(rowSums(m), decreasing=TRUE)
+    d <- data.frame(word = names(v), freq=v)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success.
+
+\textbf{23/10/19 - 11:07pm}
+
+\textbf{Objective:} Find the top 20 frequent words that occur a minimum 2 times.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    head(d,20, min.freq=2)
+\end{verbatim}
+
 \newpage
 \subsection{Proof of Concept Solutions}
 
@@ -2128,6 +2647,16 @@ The following code is able to create new .txt files in the corpus\_output direct
     done
 \end{verbatim}
 
+\textbf{UPDATE}
+
+The following code is able to create new .txt files in the corpus\_output/titles/ directory that contain the title only.
+
+\begin{verbatim}
+    for filename in *.txt
+do head -n 2 $filename | tail -n 1 > ../corpus_output/titles/title-${filename}
+done
+\end{verbatim}
+
 \subsubsection{Extracting titles and subtitles from the selection of articles}
 
 Using the following code, one could extract the titles and subtitles from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an articletitles.txt file in the corpus\_output directory.
@@ -2137,6 +2666,27 @@ Using the following code, one could extract the titles and subtitles from each o
     do head -n 3 $filename | tail -n 2
     done > articletitlessubtitles.txt
     mv articletitlessubtitles.txt ../corpus_output/articlestitlessubtitles.txt
+\end{verbatim}
+
+\textbf{UPDATE}
+
+The following code is able to create new .txt files in the corpus\_output/titlessubtitles/ directory that contain the title and subtitle only.
+
+\begin{verbatim}
+    for filename in *.txt
+do head -n 3 $filename | tail -n 2 >
+../corpus_output/titlessubtitles/titlesubtitles-${filename}
+done
+\end{verbatim}
+
+\subsubsection{Extracting body text from the selection of articles}
+
+Using the following code, one could extract the body from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an body-*.txt file in the corpus\_output/body/ directory.
+
+\begin{verbatim}
+    for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
 \end{verbatim}
 
 \newpage
