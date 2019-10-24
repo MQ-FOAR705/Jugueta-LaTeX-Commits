@@ -1492,6 +1492,10 @@ https://www.youtube.com/watch?v=pFinlXYLZ-A
 
 I think I will forego use of Voyant and try to use R instead.
 
+\textbf{24/10/19 - 10:26pm}
+
+I think I'm nearing the end of my PoC testing. Now that I have created a bash script that automates the process of extracting body text and creating next .txt files in the corpus\_output/body/ directory, I am thinking if I can automate the R script as well. For this purpose, I will create a new user story that combines that of \textbf{Extract the specific information I want from the .txt files} and \textbf{Identify themes}. I will call this new story \textbf{Automate the extract and identify process}.
+
 \newpage
 \subsection{Proof of Concept Design - User Stories}
 
@@ -1508,6 +1512,12 @@ As a research student, I would like to be able to run a script that is able to t
 \subsubsection{Identify Themes}
 
 As a research student, I would like to use software that is able to analyse a corpus of text and identify emergent themes thereof.
+
+\subsubsection{Automate the extract and identify process}
+
+As mentioned in my General Thoughts section, I have created this new user story as I feel I can combine the two user stories of \textbf{Extract the specific information I want from the .txt files} and \textbf{Identify Themes}.
+
+As a research student, I would like to be able to automate the process of extracting specific information in the .txt files I have saved from \textit{Neues Deutschland} and identify themes therein.
 
 \subsubsection{Store Analysis}
 
@@ -1908,6 +1918,75 @@ done
 
 \textbf{Result:} New .txt files in the /corpus\_output/body/ directory created that contain only the body text of their respective articles. SUCCESS!
 
+\textbf{24/10/19 - 10:13pm}
+
+The next step to make this whole process work more efficiently is to see if I can write a bash script to automate the process.
+
+\textbf{Objective:} Create bin directory in directory structure
+
+\textbf{Action:} Used the code \begin{verbatim}
+    mkdir bin
+\end{verbatim}
+in my PoC test directory.
+
+\textbf{Error:} None.
+
+\textbf{Result:} bin directory created.
+
+\textbf{24/10/19 - 10:17pm}
+
+Now to see if I can write a bash script that automates the process of extracting the body text from the articles.
+
+\textbf{Objective:} Write bash script to automate the process of extracting the body text of the articles and save it in the bin directory
+
+\textbf{Action} Started with the code \begin{verbatim}
+    for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+\end{verbatim}
+
+and modified it to
+
+\begin{verbatim}
+    #!/bin/bash
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+\end{verbatim}
+
+I added the change in directory because Terminal will need to leave the bin folder and open the corpus\_input folder to get the .txt files. I also changed the extension to be .sh
+
+\textbf{Error:} None.
+
+\textbf{Result:} extractbody file in bin directory.
+
+\textbf{24/10/19 - 10:19pm}
+
+Now to test the bash script.
+
+\textbf{Objective:} Test bash script in bin folder.
+
+\textbf{Action:} \begin{itemize}
+    \item Opened Terminal
+    \item Navigated to the PoC directory
+    \item Used the code \begin{verbatim}
+        chmod 700 extractbody.sh to make it a executable file
+    \end{verbatim}
+\item Typed the code \begin{verbatim}
+    bash extractbody.sh
+\end{verbatim}
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} It automated the process! I'm quite proud of myself.
+
 \subsubsection{Identify Themes}
 
 \textbf{16/9/19 - 4:05pm}
@@ -2234,6 +2313,342 @@ I think "„" appeared because it's not recognised as punctuation in English.
 \textbf{Error:} It didn't remove the "„"
 
 \textbf{Result:} It didn't remove the "„". I'll just move on for now and see if I can fix it later.
+
+\textbf{23/10/19 - 11:04pm}
+
+\textbf{Objective:} To get list of frequent words
+
+\textbf{Action:} Used the code \begin{verbatim}
+    m <- as.matrix(dtm)
+    v <- sort(rowSums(m), decreasing=TRUE)
+    d <- data.frame(word = names(v), freq=v)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success.
+
+\textbf{23/10/19 - 11:07pm}
+
+\textbf{Objective:} Find the top 20 frequent words that occur a minimum 2 times.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    head(d,20, min.freq=2)
+\end{verbatim}
+
+\subsubsection{Automate the extract and identify process}
+
+As mentioned in my General Thoughts section, I have created this new user story as I feel I can combine the two user stories of \textbf{Extract the specific information I want from the .txt files} and \textbf{Identify Themes}.
+
+\textbf{24/10/19 - 10:37pm}
+
+Now that I have a bash script which automates the extract body text process, I need to complete this R script so that it will continue the automation and output some word frequency data. Before I output any data, I need to create a data frame using R so I can do the outputing.
+
+\textbf{Objective:} Create a data.frame for the VCorpus\_clean
+
+\textbf{Action:} Used the code \begin{verbatim}
+    m <- as.matrix(dtm)
+    v <- sort(rowSums(m), decreasing=TRUE)
+    d <- data.frame(word = names(v), freq=v)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} dataframe d created for VCorpus\_clean.
+
+\textbf{24/10/19 - 10:51pm}
+
+\textbf{Objective:} Write .csv file from the corpus dataframe
+
+\textbf{Action:} Used the code \begin{verbatim}
+    write.csv(d, "corpuswordfrequency.csv", row.names=FALSE)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} corpuswordfrequency.csv file created in the same directory where textualanalysis.R is stored.
+
+\textbf{24/10/19 - 10:56pm}
+
+\textbf{Objective:} Write code to save outputed dataframe .csv file in the directory /data/wordfreq/
+
+\textbf{Action:} Created wordfreq directory in Poc folder. Then wrote the code \begin{verbatim}
+    write.csv(d, file="/users/Janakin/Documents/PoC/data/wordfreq/corpuswordfrequency.csv", row.names=FALSE)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} corpuswordfrequency.csv file created in wordfreq directory!
+
+\textbf{24/10/19 - 10:59pm}
+
+Now for the big test. I want to see if I can get my bash script to run my R script as well.
+
+\textbf{Objective:} Modify extractbody.sh to run the R script that creates a .csv file from the word frequency found in a corpus.
+
+\textbf{Action:} \begin{itemize}
+    \item Copied textualanalysis.R
+    \item Pasted textualanalysis.R in Poc/bin/
+    \item Renamed textualanalysis to wordfreq\_body.R
+    \item Rewrote extractbody.sh to \begin{verbatim}
+        #!/bin/bash
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_body.R
+    \end{verbatim}
+    \item Ran bash extractbody.sh
+\end{itemize}
+
+\textbf{Error:} Yes
+
+\textbf{Result:} This was the error message in Terminal \begin{verbatim}
+    Error in file(con, "r") : cannot open the connection
+\end{verbatim}
+
+I will revisit this later.
+
+\textbf{24/10/19 - 11:30pm}
+
+I just realised my R code will overwrite any existing .csv in the wordfreq directory.
+
+\textbf{Objective:} Modify R script to ensure it does not overwrite existing .csv files in wordfreq directory.
+
+\textbf{Action:} Used the code \begin{verbatim}
+    write.csv(d, file=paste0("/users/Janakin/Documents/PoC/data/
+    wordfreq/corpuswordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim}
+
+\textbf{25/10/19 - 12:11am}
+
+Revisiting my attempt to synthesise Extract and Identify. After some head scratching, I realised I was getting that error because the R Script was looking for files that were not there. I had deleted them to test another thing. I had to run my Terminal code again to make it appear.
+
+\textbf{Objective:} Modify bash script to incorporate R Script.
+
+\textbf{Action:} \begin{itemize}
+    \item Rewrote code for wordfreq\_body.R and removed the install command for Wordcloud as I was not using that anymore.
+    \item Ran extractbody.sh again
+\end{itemize}
+
+\textbf{Error:} None!
+
+\textbf{Result:} Success! Process from start to finish is now automated.
+
+\textbf{25/10/19 - 12:26am}
+
+Now that I have automated the process for body text, I will see if I can do the same for titles and titlessubtitles.
+
+\textbf{Objective:} Automate process for titles.
+
+\textbf{Action:} \begin{itemize}
+    \item Created a extracttitles.sh file in PoC/bin directory
+    \item Wrote the code \begin{verbatim}
+        #!/bin/bash
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do head -n 2 $filename | tail -n 1 > ../corpus_output/titles/title-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_titles.R
+    \end{verbatim}
+    \item Created a new R script called wordfreq\_titles.R in PoC/bin directory
+    \item Created three new directories in the PoC/data/wordfreq/ directory. body, titles and titlessubtitles
+    \item Used the code \begin{verbatim}
+        # Package and library required for this work
+if(!require(tm)){
+  install.packages("tm")
+  library(tm)
+}
+# The file path to where the .txt files are stored
+folder <- "~/Documents/PoC/data/corpus_output/titles"
+# Lists the files in the path
+filelist <- list.files(path=folder, pattern="*.txt")
+# Creates a path to all .txt files in path folder
+filelist <- paste(folder, "/", filelist, sep="")
+# Reads text from .txt files
+readtext <- lapply(filelist, FUN = readLines)
+# Collapses elements into one element
+corpus <- lapply(readtext, FUN = paste, collapse=" ")
+# Convert corpus to something tm package can use
+VCorpus <- Corpus(VectorSource(corpus))
+# Using a new corpus name 'VCorpus_clean to keep the original 
+VCorpus object untouched
+# Strip whitespace from corpus
+VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+# Convert corpus to lower case
+VCorpus_clean <- tm_map(VCorpus_clean, content_transformer(tolower))
+# Remove German stop words
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+# Remove punctuation
+VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+# Remove "„" and "—"from corpus
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c("„","—"))
+# Create Term-Document Matrix
+dtm <- TermDocumentMatrix(VCorpus_clean)
+# To get the list of frequency of words
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v)
+# Output dataframe as a .csv file
+write.csv(d, file=paste0("/users/Janakin/Documents/PoC/data/wordfreq/titles/
+titlewordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+    \end{verbatim}
+    \item Unlocked the extracttitles.sh in Finder,
+    \item Made the extracttitles.sh executable by using the chmod 700 command in Terminal.
+    \item Ran bash extracttitles.sh
+\end{itemize}
+
+\textbf{Error:} None!
+
+\textbf{Result:} Another success!
+
+\textbf{25/10/19 - 12:39am}
+
+I need to rewrite the wordfreq\_body.R script so that it writes the .csv file to the correct location.
+
+\textbf{Objective:} Rewrite the wordfreq\_body.R script so that it writes the .csv file to the correct location.
+
+\textbf{Action:} Replaced the old write code with \begin{verbatim}
+    write.csv(d, file=paste0("/users/Janakin/Documents/PoC/data/
+    wordfreq/body/bodywordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Objective achieved.
+
+\textbf{25/10/19 - 12:43am}
+
+Now to automate the process for titles and subtitles.
+
+\textbf{Action:} \begin{itemize}
+    \item Created extracttitlessubtitles.sh in PoC/bin
+    \item Unlocked extracttitlessubtitles.sh in finder
+    \item Used the code \begin{verbatim}
+        #!/bin/bash
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do head -n 3 $filename | tail -n 2 > ../corpus_output/titlessubtitles/
+titlesubtitles-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_titlessubtitles.R
+    \end{verbatim}
+    \item Created wordfreq_titlessubtitles.R in PoC/bin
+    \item Used the code \begin{verbatim}
+        # Package and library required for this work
+if(!require(tm)){
+  install.packages("tm")
+  library(tm)
+}
+# The file path to where the .txt files are stored
+folder <- "~/Documents/PoC/data/corpus_output/titlessubtitles"
+# Lists the files in the path
+filelist <- list.files(path=folder, pattern="*.txt")
+# Creates a path to all .txt files in path folder
+filelist <- paste(folder, "/", filelist, sep="")
+# Reads text from .txt files
+readtext <- lapply(filelist, FUN = readLines)
+# Collapses elements into one element
+corpus <- lapply(readtext, FUN = paste, collapse=" ")
+# Convert corpus to something tm package can use
+VCorpus <- Corpus(VectorSource(corpus))
+# Using a new corpus name 'VCorpus_clean to keep the original 
+VCorpus object untouched
+# Strip whitespace from corpus
+VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+# Convert corpus to lower case
+VCorpus_clean <- tm_map(VCorpus_clean, content_transformer(tolower))
+# Remove German stop words
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+# Remove punctuation
+VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+# Remove "„" and "—"from corpus
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c("„","—"))
+# Create Term-Document Matrix
+dtm <- TermDocumentMatrix(VCorpus_clean)
+# To get the list of frequency of words
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v)
+# Output dataframe as a .csv file
+write.csv(d, file=paste0("/users/Janakin/Documents/PoC/data/wordfreq/
+titlessubtitles/titlesubtitlewordfrequency-", 
+Sys.time(), ".csv"), row.names=FALSE)
+    \end{verbatim}
+    \item Made extracttitlessubtitles.sh executable by using chmod 700 in Terminal.
+    \item Ran bash extracttitlessubtitles.sh
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} bash script ran perfect. It extracted subtitles and titles and created a .csv of the most frequent words.
+
+\textbf{25/10/19 - 12:56am}
+
+\textbf{Objective:} Tidy up the path commands in the R script so that it uses the \begin{verbatim}
+    ~
+\end{verbatim} character instead of Users/name
+
+\textbf{Action:} Change wherever there is /Users/Janakin/ to \begin{verbatim}
+    ~
+\end{verbatim} in all the R Scripts.
+
+\textbf{Error:} None.
+
+\textbf{Result:} Objective achieved.
+
+\textbf{25/10/19 - 1:00am}
+
+FINAL TEST. I want to see if I can write a bash script that will run extractbody.sh, extracttitles.sh and extracttitlessubtitles.sh.
+
+\textbf{Objective:} Automate the entire process.
+
+\textbf{Action:} \begin{itemize}
+    \item Created go.sh in PoC/bin
+    \item Wrote the code \begin{verbatim}
+        #!/bin/bash
+
+bash extractbody.sh
+bash extracttitles.sh
+bash extracttitlessubtitles.sh
+    \end{verbatim}
+    \item Unlocked go.sh in Finder
+    \item Made go.sh executable using the chmod 700 command in Terminal
+    \item Deleted all files in the subdirectories of PoC/data/wordfreq
+    \item ran bash go.sh in Terminal
+    \item Crossed my fingers.
+\end{itemize}
+
+\textbf{Error:} None!
+
+\textbf{Result:} I THINK I HAVE DONE IT! Running one command and I have analysed the information I want!!! Thank you Brian, Shawn and Katherine!
 
 \subsubsection{Store Analysis}
 
@@ -2586,27 +3001,43 @@ In tm_map.SimpleCorpus(VCorpus, content_transformer(tolower)) :
 
 \textbf{Result:} It didn't remove the "„". I'll just move on for now and see if I can fix it later.
 
-\textbf{23/10/19 - 11:04pm}
+\textbf{24/10/19 - 10:59pm}
 
-\textbf{Objective:} To get list of frequent words
+Now for the big test. I want to see if I can get my bash script to run my R script as well.
 
-\textbf{Action:} Used the code \begin{verbatim}
-    m <- as.matrix(dtm)
-    v <- sort(rowSums(m), decreasing=TRUE)
-    d <- data.frame(word = names(v), freq=v)
+\textbf{Objective:} Modify extractbody.sh to run the R script that creates a .csv file from the word frequency found in a corpus.
+
+\textbf{Action:} \begin{itemize}
+    \item Copied textualanalysis.R
+    \item Pasted textualanalysis.R in Poc/bin/
+    \item Renamed textualanalysis to wordfreq\_body.R
+    \item Rewrote extractbody.sh to \begin{verbatim}
+        #!/bin/bash
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_body.R
+    \end{verbatim}
+    \item Ran bash extractbody.sh
+\end{itemize}
+
+\textbf{Error:} Yes
+
+\textbf{Result:} This was the error message in Terminal \begin{verbatim}
+    Error in file(con, "r") : cannot open the connection
 \end{verbatim}
 
-\textbf{Error:} None.
-
-\textbf{Result:} Success.
-
-\textbf{23/10/19 - 11:07pm}
-
-\textbf{Objective:} Find the top 20 frequent words that occur a minimum 2 times.
-
-\textbf{Action:} Used the code \begin{verbatim}
-    head(d,20, min.freq=2)
-\end{verbatim}
+I will revisit this later.
 
 \newpage
 \subsection{Proof of Concept Solutions}
