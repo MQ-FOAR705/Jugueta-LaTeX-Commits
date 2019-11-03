@@ -1278,6 +1278,48 @@ Changing the font size to make it more readable.
 
 \includegraphics[width=\textwidth]{ggplot_22.png}
 
+\textbf{29/10/19 - 2:20pm}
+
+Diagonally place font
+
+\begin{verbatim}
+    ggplot(percent_items, aes(x = village, y = percent)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ items) +
+  labs(title = "Percent of respondents in each village \n who owned each item",
+       x = "Village",
+       y = "Percent of Respondents") +
+  theme_bw() +
+  theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 45, hjust = 0.5, vjust = 0.5),
+        axis.text.y = element_text(colour = "grey20", size = 8),
+        text = element_text(size = 8))
+\end{verbatim}
+
+\includegraphics[width=\textwidth]{ggplot_23.png}
+
+\textbf{29/10/19 - 2:23pm}
+
+Saving themes as objects and centering titles. First used
+
+\begin{verbatim}
+    grey_theme <- theme(axis.text.x = element_text(colour = "grey20", size = 8, angle = 45, hjust = 0.5, vjust = 0.5),
+                    axis.text.y = element_text(colour = "grey20", size = 8),
+                    text = element_text(size = 8),
+                    plot.title = element_text(hjust = 0.5))
+\end{verbatim}
+
+then used \begin{verbatim}
+    ggplot(percent_items, aes(x = village, y = percent)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ items) +
+  labs(title = "Percent of respondents in each village \n who owned each item",
+       x = "Village",
+       y = "Percent of Respondents") +
+  grey_theme
+\end{verbatim}
+
+\includegraphics[width=\textwidth]{ggplot_24.png}
+
 \newpage
 \section{R for Social Scientists Exercises}
 
@@ -1617,7 +1659,7 @@ Then used this code \begin{verbatim}
 
 \textbf{29/10/19 - 1:23pm}
 
-\textbf{Objective:} Use what you just learned to create a scatter plot of rooms by village with the respondent_wall_type showing in different colors.
+\textbf{Objective:} Use what you just learned to create a scatter plot of rooms by village with the respondent\_wall\_type showing in different colors.
 
 \textbf{Action:} Used the code \begin{verbatim}
     ggplot(data = interviews_plotting, aes(x = village, y = rooms)) +
@@ -1715,6 +1757,13 @@ geom_bar(stat = "identity", position = "dodge")
 I think I like the minimal theme the best.
 
 \includegraphics[width=\textwidth]{ggplot_20.png}
+
+\subsection{Customization}
+
+This is more my vibe.
+
+
+\includegraphics[width=\textwidth]{ggplot_25.png}
 
 \newpage
 \section{R Error List}
@@ -3017,6 +3066,91 @@ bash extracttitlessubtitles.sh
 
 \textbf{Result:} I THINK I HAVE DONE IT! Running one command and I have analysed the information I want!!! Thank you Brian, Shawn and Katherine!
 
+\textbf{29/10/19 - 4:30pm}
+
+I just realised, I forgot to remove the numbers from the corpus.
+
+\textbf{Action:} Add code in R Script to remove numbers. \begin{verbatim}
+    # Remove numbers
+    VCorpus_clean <- tm_map(VCorpus_clean, removeNumbers)
+\end{verbatim}. Ran go.sh again to see if numbers have been removed.
+
+\textbf{Error:} None.
+
+\textbf{Result:} Numbers have been removed.
+
+\textbf{29/10/19 - 4:35pm}
+
+Another I have realised. I probably should make a script that removes the data from the data/corpus\_output/ directories so that go.sh doesn't accidently add more .txt files, thereby skewing any wordfreq analysis.
+
+\textbf{Objective:} Write a script that deletes .txt files
+
+\textbf{Action:} Tested \begin{verbatim}
+    rm *.txt
+\end{verbatim}
+
+\textbf{Error:} None.
+
+\textbf{Result:} .txt files in the directory were deleted.
+
+\textbf{29/10/19 - 4:38pm}
+
+\textbf{Objective:} Write a bash script that deletes .txt files in the corpus\_output directories.
+
+\textbf{Action:} Used the code to write a script \begin{verbatim}
+    #!/bin/bash
+
+# Changes directory to corpus_output/body directory
+cd ..
+cd data/corpus_output/body/
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to corpus_output/titles directory
+cd ../titles
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to corpus_output/titlessubtitles directory
+cd ../titlessubtitles/
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to bin directory
+cd ../../../bin/
+\end{verbatim}. Saved it as delete.sh and chmod 700 the script to make it executable. Ran bash delete.sh in Terminal.
+
+\textbf{Error:} None.
+
+\textbf{Result:} delete.sh deleted the data out of the corpus\_output directories.
+
+\textbf{3/11/19 - 11:53pm}
+
+I have slightly amended some of the Terminal and R Scripts so that they now see 
+
+\begin{verbatim}
+    ~/corpus-analysis/
+\end{verbatim}
+
+instead of \begin{verbatim}
+    ~/PoC/
+\end{verbatim}
+
+as the working directory. I thought I should give it a better name.
+
+\textbf{3/11/19 - 11:54pm}
+
+I have added \begin{verbatim}
+    # Create output directories if needed
+    mkdir -p ~/corpus-analysis/data/corpus_output/
+    mkdir -p ~/corpus-analysis/data/corpus_output/body
+    mkdir -p ~/corpus-analysis/data/wordfreq/
+    mkdir -p ~/corpus-analysis/data/wordfreq/body
+\end{verbatim} to the respective bash scripts so that they create the directories for output if they don't already exist.
+
 \subsubsection{Store Analysis}
 
 \textbf{16/9/19 - 4:24pm}
@@ -3054,6 +3188,10 @@ All other analysis outputs can be exported as Visualitions in the form of a .png
 \textbf{Error:} None.
 
 \textbf{Result:} New filed saved as terms.tsv
+
+\textbf{29/10/19 - 4:49pm}
+
+Please read the user story above for how I chose to store analysis \emph{after} I changed my analysis software to R.
 
 \subsubsection{Additional Notes}
 
@@ -3212,6 +3350,392 @@ All other analysis outputs can be exported as Visualitions in the form of a .png
 \textbf{Error:} None.
 
 \textbf{Result:} The notes are correctly tagged with the 'stasi' tag.
+
+\newpage
+\subsection{Proof of Concept - Deployability Testing}
+
+\textbf{25/10/19 - 12:30pm}
+
+After thinking I had finished my PoC user testing I had fellow students Sophie Wallace and Tom Duloy to download and test my bash and R scripts. 
+
+\textbf{Objective:} Test go.sh bash script.
+
+\textbf{Action:} \begin{itemize}
+    \item Downloaded PoC.zip from my Github repository.
+    \item Unzipped PoC.zip to Documents folder.
+    \item Ran go.bash from the bin directory in Terminal.
+\end{itemize}
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} This was the Terminal error message: \begin{verbatim}
+    Error in contrib.url(repos, "source") : 
+  trying to use CRAN without setting a mirror
+Calls: install.packages -> contrib.url
+In addition: Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘tm’
+Execution halted
+\end{verbatim}
+
+\textbf{25/10/19 - 1:25pm}
+
+After some reading on the internet, I found out that I needed to use a CRAN mirror if the files were to be downloaded outside an RStudio environment.
+
+\textbf{Objective:} Rewrite RScript to use a CRAN mirror to download tm package.
+
+\textbf{Action:} \begin{itemize}
+    \item Used code \begin{verbatim}
+    if(!require(tm)){
+install.packages("tm",repos = "http://cran.us.r-project.org")
+library(tm)
+}
+\end{verbatim} instead of the other code that would install packages from inside an RStudio environment.
+    \item Ran extractbody.sh on Sophie's machine
+\end{itemize}
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success! So I will now replace the \begin{verbatim}
+    install.packages("tm")
+\end{verbatim} with \begin{verbatim}
+    install.packages("tm",repos = "http://cran.us.r-project.org")
+\end{verbatim} in all the RScripts.
+
+\textbf{25/10/19 - 1:45pm}
+
+\textbf{Objective:} See if go.sh runs on another persons machine.
+
+\textbf{Action:} \begin{itemize}
+    \item Re-downloaded the update R Scripts to Sophies machine
+    \item Ran go.sh
+
+\textbf{Error:} None.
+
+\textbf{Result:} The software works. I think I finally have a fully functional 1.0 version.
+\end{itemize}
+
+\newpage
+\subsection{Proof of Concept - Disaster Recovery Plan}
+
+\textbf{29/10/19 - 4:05pm}
+
+Having installed Duplicati last Friday in class, I noticed that it didn't have access to my Documents folder. After doing some reading, I think that is just a permissions thing. I will probabyl have to rewrite some of the script so that the PoC directory should be stored in the User folder.
+
+\textbf{Objective:} Rewrite scripts so that they now work when the PoC folder is stored in the User folder and not the Documents folder.
+
+\textbf{Action:} In the respective R Scripts, changed the \begin{verbatim}
+    folder <- "~/Documents/PoC/data/corpus_output/body"
+\end{verbatim}
+
+to \begin{verbatim}
+    folder <- "~/PoC/data/corpus_output/body"
+\end{verbatim}
+
+and changed \begin{verbatim}
+    write.csv(d, file=paste0("~/Documents/PoC/data/wordfreq/body/
+    bodywordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim} to \begin{verbatim}
+    write.csv(d, file=paste0("~/PoC/data/wordfreq/body/
+    bodywordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim}
+
+Moved the PoC folder to my home User folder than ran go.sh.
+
+\textbf{Error:} None.
+
+\textbf{Result:} Success!
+
+\textbf{29/10/19 - 4:51pm}
+
+I have reconfigured the backup with Duplicati to back up Users/PoC. There no longer seems to be an error and a successful backup has been performed.
+
+\newpage
+\subsection{Proof of Concept Final Scripts}
+
+\subsubsection{go.sh Bash Script}
+
+\begin{verbatim}
+#!/bin/bash
+
+bash extractbody.sh
+bash extracttitles.sh
+bash extracttitlessubtitles.sh
+\end{verbatim}
+
+\subsubsection{extractbody.sh Bash Script}
+
+\begin{verbatim}
+#!/bin/bash
+
+# Create output directories if needed
+mkdir -p ~/corpus-analysis/data/corpus_output/
+mkdir -p ~/corpus-analysis/data/corpus_output/body
+mkdir -p ~/corpus-analysis/data/wordfreq/
+mkdir -p ~/corpus-analysis/data/wordfreq/body
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do tail -n +6 $filename > ../corpus_output/body/body-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_body.R
+\end{verbatim}
+
+\subsubsection{extracttitles.sh Bash Script}
+
+\begin{verbatim}
+#!/bin/bash
+
+# Create output directories if needed
+mkdir -p ~/corpus-analysis/data/corpus_output/
+mkdir -p ~/corpus-analysis/data/corpus_output/titles
+mkdir -p ~/corpus-analysis/data/wordfreq/
+mkdir -p ~/corpus-analysis/data/wordfreq/titles
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do head -n 2 $filename | tail -n 1 > ../corpus_output/titles/title-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_titles.R
+\end{verbatim}
+
+\subsubsection{extracttitlessubtitles.sh Bash Script}
+
+\begin{verbatim}
+#!/bin/bash
+
+# Create output directories if needed
+mkdir -p ~/corpus-analysis/data/corpus_output/
+mkdir -p ~/corpus-analysis/data/corpus_output/titlessubtitles
+mkdir -p ~/corpus-analysis/data/wordfreq/
+mkdir -p ~/corpus-analysis/data/wordfreq/titlessubtitles
+
+# Changes directory to corpus_input directory
+cd ..
+cd data/corpus_input/
+
+# Loop to extract body text and output to new .txt files in corpus_output
+for filename in *.txt
+do head -n 3 $filename | tail -n 2 > 
+../corpus_output/titlessubtitles/titlesubtitles-${filename}
+done
+
+# Go back to the bin folder to run R script
+cd ../..
+cd bin
+Rscript wordfreq_titlessubtitles.R
+\end{verbatim}
+
+\subsubsection{delete.sh Bash Script}
+
+\begin{verbatim}
+#!/bin/bash
+
+# Changes directory to corpus_output/body directory
+cd ..
+cd data/corpus_output/body/
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to corpus_output/titles directory
+cd ../titles
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to corpus_output/titlessubtitles directory
+cd ../titlessubtitles/
+
+# Delete .txt files
+rm *.txt
+
+# Changes directory to bin directory
+cd ../../../bin/
+\end{verbatim}
+
+\subsubsection{wordfreq\_body.R Script}
+
+\begin{verbatim}
+# Package and library required for this work
+if(!require(tm)){
+install.packages("tm",repos = "http://cran.us.r-project.org")
+library(tm)
+}
+# The file path to where the .txt files are stored
+folder <- "~/corpus-analysis/data/corpus_output/body"
+# Lists the files in the path
+filelist <- list.files(path=folder, pattern="*.txt")
+# Creates a path to all .txt files in path folder
+filelist <- paste(folder, "/", filelist, sep="")
+# Reads text from .txt files
+readtext <- lapply(filelist, FUN = readLines)
+# Collapses elements into one element
+corpus <- lapply(readtext, FUN = paste, collapse=" ")
+# Convert corpus to something tm package can use
+VCorpus <- Corpus(VectorSource(corpus))
+# Using a new corpus name 'VCorpus_clean to keep the original VCorpus 
+object untouched
+# Strip whitespace from corpus
+VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+# Convert corpus to lower case
+VCorpus_clean <- tm_map(VCorpus_clean, content_transformer(tolower))
+# Remove German stop words
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+# Remove punctuation
+VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+# Remove numbers
+VCorpus_clean <- tm_map(VCorpus_clean, removeNumbers)
+# Remove """ and "—"from corpus
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c(""","—"))
+# Create Term-Document Matrix
+dtm <- TermDocumentMatrix(VCorpus_clean)
+# To get the list of frequency of words
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v)
+# Output dataframe as a .csv file
+write.csv(d, file=paste0("~/corpus-analysis/data/wordfreq/body/
+bodywordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim}
+
+\subsubsection{wordfreq\_titles.R Script}
+
+\begin{verbatim}
+# Package and library required for this work
+if(!require(tm)){
+install.packages("tm",repos = "http://cran.us.r-project.org")
+library(tm)
+}
+# The file path to where the .txt files are stored
+folder <- "~/corpus-analysis/data/corpus_output/titles"
+# Lists the files in the path
+filelist <- list.files(path=folder, pattern="*.txt")
+# Creates a path to all .txt files in path folder
+filelist <- paste(folder, "/", filelist, sep="")
+# Reads text from .txt files
+readtext <- lapply(filelist, FUN = readLines)
+# Collapses elements into one element
+corpus <- lapply(readtext, FUN = paste, collapse=" ")
+# Convert corpus to something tm package can use
+VCorpus <- Corpus(VectorSource(corpus))
+# Using a new corpus name 'VCorpus_clean to keep the original 
+VCorpus object untouched
+# Strip whitespace from corpus
+VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+# Convert corpus to lower case
+VCorpus_clean <- tm_map(VCorpus_clean, content_transformer(tolower))
+# Remove German stop words
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+# Remove punctuation
+VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+# Remove numbers
+VCorpus_clean <- tm_map(VCorpus_clean, removeNumbers)
+# Remove """ and "—"from corpus
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c("","—"))
+","—"))
+# Create Term-Document Matrix
+dtm <- TermDocumentMatrix(VCorpus_clean)
+# To get the list of frequency of words
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v)
+# Output dataframe as a .csv file
+write.csv(d, file=paste0("~/corpus-analysis/data/wordfreq/titles/
+titlewordfrequency-", Sys.time(), ".csv"), row.names=FALSE)
+\end{verbatim}
+
+\subsubsection{wordfreq\_titlessubtitles.R Script}
+
+\begin{verbatim}
+# Package and library required for this work
+if(!require(tm)){
+install.packages("tm",repos = "http://cran.us.r-project.org")
+library(tm)
+}
+# The file path to where the .txt files are stored
+folder <- "~/corpus-analysis/data/corpus_output/titlessubtitles"
+# Lists the files in the path
+filelist <- list.files(path=folder, pattern="*.txt")
+# Creates a path to all .txt files in path folder
+filelist <- paste(folder, "/", filelist, sep="")
+# Reads text from .txt files
+readtext <- lapply(filelist, FUN = readLines)
+# Collapses elements into one element
+corpus <- lapply(readtext, FUN = paste, collapse=" ")
+# Convert corpus to something tm package can use
+VCorpus <- Corpus(VectorSource(corpus))
+# Using a new corpus name 'VCorpus_clean to keep the original 
+VCorpus object untouched
+# Strip whitespace from corpus
+VCorpus_clean <- tm_map(VCorpus, stripWhitespace)
+# Convert corpus to lower case
+VCorpus_clean <- tm_map(VCorpus_clean, content_transformer(tolower))
+# Remove German stop words
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, stopwords("german"))
+# Remove punctuation
+VCorpus_clean <- tm_map(VCorpus_clean, removePunctuation)
+# Remove numbers
+VCorpus_clean <- tm_map(VCorpus_clean, removeNumbers)
+# Remove """ and "—"from corpus
+VCorpus_clean <- tm_map(VCorpus_clean, removeWords, c(""","—"))
+# Create Term-Document Matrix
+dtm <- TermDocumentMatrix(VCorpus_clean)
+# To get the list of frequency of words
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v)
+# Output dataframe as a .csv file
+write.csv(d, file=paste0("~/corpus-analysis/data/wordfreq/
+titlessubtitles/titlesubtitlewordfrequency-", 
+Sys.time(), ".csv"), row.names=FALSE)
+
+\end{verbatim}
+
+\newpage
+\subsection{Bugs in Proof of Concept}
+
+\textbf{29/10/19 - 4:21pm}
+
+When running the R Scripts, these messages appear: \begin{verbatim}
+    Warning message:
+In tm_map.SimpleCorpus(VCorpus, stripWhitespace) :
+  transformation drops documents
+Warning message:
+In tm_map.SimpleCorpus(VCorpus_clean, content_transformer(tolower)) :
+  transformation drops documents
+Warning message:
+In tm_map.SimpleCorpus(VCorpus_clean, removeWords, stopwords("german")) :
+  transformation drops documents
+Warning message:
+In tm_map.SimpleCorpus(VCorpus_clean, removePunctuation) :
+  transformation drops documents
+Warning message:
+In tm_map.SimpleCorpus(VCorpus_clean, removeWords, c(""", "—")) :
+  transformation drops documents
+\end{verbatim}
+
+Having checked the documents, it doesn't seem to be losing any terms. So I'm not exactly sure by what this means.
+
+\textbf{29/10/19 - 4:22pm}
+
+For some reason, the long - and the upside down German " do not get removed from the corpus.
 
 \newpage
 \subsection{Errors in Proof of Concept}
@@ -3406,85 +3930,28 @@ Rscript wordfreq_body.R
 
 I will revisit this later.
 
-\newpage
-\subsection{Proof of Concept Solutions}
+\textbf{18/10/19 - 12:30pm}
 
-\subsubsection{Make directories}
+After thinking I had finished my PoC user testing I had fellow students Sophie Wallace and Tom Duloy to download and test my bash and R scripts. 
 
-The following code will create the directories needed for this PoC. This would need to occur before any other script is run.
+\textbf{Objective:} Test go.sh bash script.
 
-\begin{verbatim}
-    mkdir data
-    mkdir data/corpus_input/
-    mkdir data/corpus_output/
-    mkdir data/corpus_output/titles/
-    mkdir data/corpus_output/titlessubtitles/
-    mkdir data/corpus_output/body/
-\end{verbatim}
+\textbf{Action:} \begin{itemize}
+    \item Downloaded PoC.zip from my Github repository.
+    \item Unzipped PoC.zip to Documents folder.
+    \item Ran go.bash from the bin directory in Terminal.
+\end{itemize}
 
-\subsubsection{Extracting titles from the selection of articles}
+\textbf{Error:} Yes.
 
-Using the following code, one could extract just the title from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an articletitles.txt file in the corpus\_output directory.
-
-\begin{verbatim}
-    for filename in *.txt
-    do head -n 2 $filename | tail -n 1
-    done > articletitles.txt
-    mv articletitles.txt ../corpus_output/articletitles.txt
-\end{verbatim}
-
-The next step is to recreate these set of commands as a script.
-
-\textbf{UPDATE}
-
-The following code is able to create new .txt files in the corpus\_output directory that contain the title only.
-
-\begin{verbatim}
-    for filename in *.txt
-    do head -n 2 $filename | tail -n 1 > ../corpus_output/title-${filename}
-    done
-\end{verbatim}
-
-\textbf{UPDATE}
-
-The following code is able to create new .txt files in the corpus\_output/titles/ directory that contain the title only.
-
-\begin{verbatim}
-    for filename in *.txt
-do head -n 2 $filename | tail -n 1 > ../corpus_output/titles/title-${filename}
-done
-\end{verbatim}
-
-\subsubsection{Extracting titles and subtitles from the selection of articles}
-
-Using the following code, one could extract the titles and subtitles from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an articletitles.txt file in the corpus\_output directory.
-
-\begin{verbatim}
-    for filename in *.txt
-    do head -n 3 $filename | tail -n 2
-    done > articletitlessubtitles.txt
-    mv articletitlessubtitles.txt ../corpus_output/articlestitlessubtitles.txt
-\end{verbatim}
-
-\textbf{UPDATE}
-
-The following code is able to create new .txt files in the corpus\_output/titlessubtitles/ directory that contain the title and subtitle only.
-
-\begin{verbatim}
-    for filename in *.txt
-do head -n 3 $filename | tail -n 2 >
-../corpus_output/titlessubtitles/titlesubtitles-${filename}
-done
-\end{verbatim}
-
-\subsubsection{Extracting body text from the selection of articles}
-
-Using the following code, one could extract the body from each of the newspaper articles that are in .txt format within the corpus\_input directory and create an body-*.txt file in the corpus\_output/body/ directory.
-
-\begin{verbatim}
-    for filename in *.txt
-do tail -n +6 $filename > ../corpus_output/body/body-${filename}
-done
+\textbf{Result:} This was the Terminal error message: \begin{verbatim}
+    Error in contrib.url(repos, "source") : 
+  trying to use CRAN without setting a mirror
+Calls: install.packages -> contrib.url
+In addition: Warning message:
+In library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+  there is no package called ‘tm’
+Execution halted
 \end{verbatim}
 
 \newpage
