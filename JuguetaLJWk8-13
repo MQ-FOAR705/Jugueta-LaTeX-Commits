@@ -3416,6 +3416,215 @@ library(tm)
 \end{itemize}
 
 \newpage
+\subsection{Proof of Concept - Quality Assurance}
+
+\subsubsection{Manual Testing}
+
+\textbf{4/11/19 - 7:39pm}
+
+To test the R Script that analyses the word frequency of terms found within a .txt corpus, I have selected Helene Fischer's song 'Atemlos durch die Nacht'. I have selected this example because it is in German. For the purposes of this test, I have selected the first verse and chorus to analyse. The lyrics are as follows.
+
+\begin{verbatim}
+Wir zieh'n durch die Straßen und die Clubs dieser Stadt
+Das ist unsre Nacht, wie für uns beide gemacht, oho oho
+Ich schließe meine Augen, lösche jedes Tabu
+Küsse auf der Haut, so wie ein Liebes-Tattoo, oho, oho
+
+Was das zwischen uns auch ist
+Bilder die man nie vergisst
+Und dein Blick hat mir gezeigt
+Das ist unsre Zeit
+
+Atemlos durch die Nacht
+Bis ein neuer Tag erwacht
+Atemlos einfach raus
+Deine Augen zieh'n mich aus
+
+Atemlos durch die Nacht
+Spür' was Liebe mit uns macht
+Atemlos, schwindelfrei
+Großes Kino für uns zwei
+
+Wir sind heute ewig, tausend Glücksgefühle
+Alles was ich bin, teil' ich mit dir
+Wir sind unzertrennlich, irgendwie unsterblich
+Komm nimm meine Hand und geh mit mir
+\end{verbatim}
+
+Having counted all the words manually, I should expect the result: \begin{itemize}
+    \item atemlos - 4
+    \item oho - 4
+    \item nacht - 3
+    \item ziehn - 2
+    \item unsre - 2
+    \item augen - 2
+\end{itemize}
+
+All other words have a frequency of 1. 
+
+Running the wordfreq\_body.R script, this is what was made.
+
+\includegraphics[width=\textwidth]{unittest1.png}
+
+A manual test confirms the script works.
+
+\subsubsection{Automated Unit Testing}
+
+\textbf{4/11/19 - 9:47pm}
+
+I am trying unit testing in R. I have created a new Rproj file called R-unit-testing, along with copying and renaming my wordfreq\_body.R script. I have created two new R scripts: test\_script.R and run\_tests.R
+
+Code for test\_script.R
+\begin{verbatim}
+testdf <- data.frame("word" = c("atemlos"), "freq" = 4)
+dat <- head(d, n=1)
+test_that("atemlos 4", {expect_identical(dat, testdf)})
+\end{verbatim}
+
+Code for run\_tests.R
+\begin{verbatim}
+install.packages("testthat")
+library(testthat)
+source("script.R")
+test_results <- test_dir("test_script.R", reporter="summary")
+\end{verbatim}
+
+\textbf{Objective:} Automate unit testing.
+
+\textbf{Action:} Ran run\_tests.R script
+
+\textbf{Error:} Yes.
+
+\textbf{Result:} R console returned this
+
+\begin{verbatim}
+    > library(testthat)
+> source("script.R")
+Loading required package: tm
+Loading required package: NLP
+Warning messages:
+1: In FUN(X[[i]], ...) :
+  incomplete final line found on '~/R-unit-testing/corpus_output/body/
+    helenefischer-atemlos.txt'
+2: In tm_map.SimpleCorpus(VCorpus, stripWhitespace) :
+  transformation drops documents
+3: In tm_map.SimpleCorpus(VCorpus_clean, content_transformer(tolower)) :
+  transformation drops documents
+4: In tm_map.SimpleCorpus(VCorpus_clean, removeWords, stopwords("german")) :
+  transformation drops documents
+5: In tm_map.SimpleCorpus(VCorpus_clean, removePunctuation) :
+  transformation drops documents
+6: In tm_map.SimpleCorpus(VCorpus_clean, removeWords, c(""", "—")) :
+  transformation drops documents
+> test_results <- test_dir("test_script.R", reporter="summary")
+Error in test_files(paths, reporter = reporter, env = env, 
+stop_on_failure = stop_on_failure,  : 
+  No matching test file in dir
+\end{verbatim}
+
+I don't know what I'm doing wrong.
+
+\textbf{4/11/19 - 9:56pm}
+
+If you are interested, you can go to https://github.com/MQ-FOAR705/Jugueta-PoC-WiP/tree/master/R-unit-testing to see what I have tried.
+
+\subsection{Proof of Concept - Deployment Instructions}
+
+\textbf{Instructions for Corpus Analysis Package}
+
+- Download the \textbf{corpus-analysis} directory from this repository and move it into the ``User`` folder on your computer.
+
+- Move your the \textbf{.txt} files that comprise your corpus into the \textbf{data/corpus\_input} directory. I have pre-loaded a corpus of German newspaper articles in this directory already in the event that you wish to test the workflow. If you are analysing a new corpus, please ensure that you remove all irrelevant \textbf{.txt} files from the \textbf{data/corpus\_input} folder, lest they are analysed as part of your corpus.
+
+- Open your the Terminal program on your machine and navigate to the \textbf{corpus-analysis/bin} directory. If you have corrected placed the \textbf{corpus-analysis} folder in the \textbf{User} folder, then you should be able to use this Terminal code to navigate there.
+
+\begin{verbatim}
+    cd corpus-analysis/bin
+\end{verbatim}
+
+- If it is the first time you are running this package, then simply type in the command
+
+\begin{verbatim}
+    bash go.sh
+\end{verbatim}
+
+If it is not the first time you are running this package, then use the command \begin{verbatim}
+    delete.sh
+\end{verbatim} to clear the \textbf{data/corpus\_output} directories, reading for a clean run.
+
+It will then analyse the corpus, outputting the data in a .csv format into the \textbf{data/wordfreq} directories. \begin{verbatim}
+    bash go.sh
+\end{verbatim} will analyse body text, titles and titles\&subtitles. If you want to analyse body text, titles or titles\&subtitles specifically, you can use the following codes.
+
+\begin{verbatim}
+    bash extractbody.sh
+\end{verbatim} for body text only.
+\begin{verbatim}
+    bash extracttitles.sh
+\end{verbatim} for titles only.
+\begin{verbatim}
+    bash extracttitlessubtitles.sh
+\end{verbatim} for titles and subtitles only.
+
+\textbf{Structure}
+
+The \textbf{corpus-analysis} folder in the repository is the folder that contains all the necessary scripts and folders to run this Proof of Concept. Within the \textbf{corpus-analysis} are two subdirectories: \textbf{bin} and \textbf{data}. \textbf{bin} contains five shell bash scripts and three R scripts.
+
+\textbf{Shell scripts}
+
+\begin{verbatim}
+    go.sh
+\end{verbatim}
+
+Is the primary shell script that triggers the entire process. 
+
+\begin{verbatim}
+    extractbody.sh
+\end{verbatim}
+
+Extracts text from line 6 (body text) down in the selected corpus and creates new \textbf{.txt} files in \textbf{data/corpus\_output/body} directory.
+
+\begin{verbatim}
+    extracttitles.sh
+\end{verbatim}
+
+Extracts text from line 2 (title text) in the selected corpus and creates new \textbf{.txt} files in \textbf{data/corpus\_output/titles} directory.
+
+\begin{verbatim}
+    extracttitlessubtitles.sh
+\end{verbatim}
+
+Extracts text from lines 2 and 3 (title text) in the selected corpus and creates new \textbf{.txt} files in \textbf{data/corpus\_output/titlessubtitles} directory.
+
+\begin{verbatim}
+    delete.sh
+\end{verbatim}
+
+Deletes \textbf{.txt} files in the \textbf{data/corpus\_output} directories.
+
+\begin{verbatim}
+    wordfreq\_body.R
+\end{verbatim}
+
+Analyses \textbf{.txt} files in \textbf{data/corpus\_output/body} directory and creates a list of words and their frequency in a \textbf{.csv} file located in the \textbf{data/wordfreq/body} directory.
+
+\begin{verbatim}
+    wordfreq_titles.R
+\end{verbatim}
+
+Analyses \textbf{.txt} files in \textbf{data/corpus\_output/titles} directory and creates a list of words and their frequency in a \textbf{.csv} file located in the \textbf{data/wordfreq/titles} directory.
+
+\begin{verbatim}
+    wordfreq_titlessubtitles.R
+\end{verbatim}
+
+Analyses \textbf{.txt} files in \textbf{data/corpus\_output/titlessubtitles} directory and creates a list of words and their frequency in a \textbf{.csv} file located in the \textbf{data/wordfreq/titlessubtitles} directory.
+
+\textbf{Notes on Corpus Word Frequency Analysis for German Texts}
+
+As mentioned in the title, this package was designed to analyse German language texts specifically. Analysing texts in English may still render some results, however, the R Script was written to identify German words.
+
+\newpage
 \subsection{Proof of Concept - Disaster Recovery Plan}
 
 \textbf{29/10/19 - 4:05pm}
