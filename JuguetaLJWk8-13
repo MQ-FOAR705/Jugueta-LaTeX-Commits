@@ -1901,7 +1901,7 @@ I have spent the past two hours looking for a way to having Voyant automatically
 
 I have stumbled on a helpful video tutorial that explains Textual Analysis in R. 
 
-https://www.youtube.com/watch?v=pFinlXYLZ-A
+\url{https://www.youtube.com/watch?v=pFinlXYLZ-A}
 
 I think I will forego use of Voyant and try to use R instead.
 
@@ -2408,7 +2408,7 @@ Now to test the bash script.
 
 \textbf{Action:}
 \begin{enumerate}
-    \item Go to www.voyant-tools.org
+    \item Go to \url{www.voyant-tools.org}
     \item Select upload
     \item Navigate to the directory on my machine where the corpus is selected
     \item Select all the .txt files that I want analysed
@@ -3526,11 +3526,12 @@ I don't know what I'm doing wrong.
 
 \textbf{4/11/19 - 9:56pm}
 
-If you are interested, you can go to https://github.com/MQ-FOAR705/Jugueta-PoC-WiP/tree/master/R-unit-testing to see what I have tried.
+If you are interested, you can go to \url{https://github.com/MQ-FOAR705/Jugueta-PoC-WiP/tree/master/R-unit-testing} to see what I have tried.
 
+\newpage
 \subsection{Proof of Concept - Deployment Instructions}
 
-\textbf{Instructions for Corpus Analysis Package}
+\subsubsection{Instructions for Corpus Analysis Package}
 
 - Download the \textbf{corpus-analysis} directory from this repository and move it into the ``User`` folder on your computer.
 
@@ -3623,6 +3624,24 @@ Analyses \textbf{.txt} files in \textbf{data/corpus\_output/titlessubtitles} dir
 \textbf{Notes on Corpus Word Frequency Analysis for German Texts}
 
 As mentioned in the title, this package was designed to analyse German language texts specifically. Analysing texts in English may still render some results, however, the R Script was written to identify German words.
+
+\subsubsection{Reproducible RStudio Environment with renv.lock}
+
+In the spirit of Open Source code, I have also provided users with access to the Rstudio Project file accessible here in the repository \url{https://github.com/MQ-FOAR705/jugueta-corpus-analysis/tree/master/textualanalysis}
+
+The repository contains the .Rproj file, .R scripts and the renv.lock file that contains the packages 'tm' and 'slam' for redeployability.  For instructions on how to use the the renv.lock file, I have copied an excerpt from \url{https://rstudio.github.io/renv/articles/renv.html}
+
+\begin{quote}Call renv::snapshot() to save the state of your project to a lockfile; and
+
+Call renv::restore() to restore the state of your project from a lockfile.
+
+Be aware that renv::restore() may fail if a package was originally installed through a CRAN-available binary, but that binary is no longer available. renv will attempt to install the package from sources in this situation, but attempts to install from source can (and often do) fail due to missing system prerequisites for compilation of a package. On Windows, the renv::equip() function may be useful – it will download external software commonly used when compiling R packages from sources, and instruct R to use that software during compilation.
+
+By default, renv will maintain and use a global cache of packages during renv::restore(), so (at least on the same machine) if that cache is maintained old projects will be restored by copying or linking from an installation discovered in the cache.
+\end{quote}
+
+
+Please visit the link listed above for more information about renv.lock.
 
 \newpage
 \subsection{Proof of Concept - Disaster Recovery Plan}
@@ -3916,6 +3935,10 @@ titlessubtitles/titlesubtitlewordfrequency-",
 Sys.time(), ".csv"), row.names=FALSE)
 
 \end{verbatim}
+
+\textbf{1/11/19 - 7:21pm}
+
+Sometimes when running the R Script, it is unable to load the dependency "slam".
 
 \newpage
 \subsection{Bugs in Proof of Concept}
