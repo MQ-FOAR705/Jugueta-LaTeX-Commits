@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{minted}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
 
@@ -3354,6 +3355,8 @@ Please read the user story above for how I chose to store analysis \emph{after} 
 \newpage
 \subsection{Proof of Concept - Deployability Testing}
 
+\subsubsection{Manual Testing}
+
 \textbf{25/10/19 - 12:30pm}
 
 After thinking I had finished my PoC user testing I had fellow students Sophie Wallace and Tom Duloy to download and test my bash and R scripts. 
@@ -3414,6 +3417,12 @@ library(tm)
 
 \textbf{Result:} The software works. I think I finally have a fully functional 1.0 version.
 \end{itemize}
+
+\subsubsection{Code Ocean}
+
+\textbf{10/11/19 - 11:03pm}
+
+I have made a working version of this PoC on Code Ocean and have shared it by collaborating with Brian Ballsun-Stanton.
 
 \newpage
 \subsection{Proof of Concept - Quality Assurance}
